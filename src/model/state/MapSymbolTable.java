@@ -38,11 +38,16 @@ public class MapSymbolTable implements SymbolTable {
         if (map.containsKey(variableName)) {
             map.put(variableName, value);
         } else {
-            define(variableName, value); // same fallback as your MapSymbolTable
+            define(variableName, value);
         }
     }
 
     public void clear() {
         map.clear();
+    }
+
+    @Override
+    public String toString() {
+        return map.toString();
     }
 }
