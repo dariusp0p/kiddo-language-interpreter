@@ -33,6 +33,6 @@ public record ArithmeticExpression
     }
 
     private boolean isNotInteger(Value term) {
-        return term.getType() == Type.INTEGER;
+        return term.getType() != Type.INTEGER;
     }
 }

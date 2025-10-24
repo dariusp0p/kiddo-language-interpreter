@@ -27,6 +27,6 @@ public record LogicExpression
     }
 
     private boolean isNotBoolean(Value term) {
-        return term.getType() == Type.BOOLEAN;
+        return term.getType() != Type.BOOLEAN;
     }
 }
