@@ -61,6 +61,11 @@ public class KiddoArrayList<T> implements KiddoList<T> {
         return Collections.unmodifiableList(data);
     }
 
+    @Override
+    public String toString() {
+        return data.toString();
+    }
+
     private void checkIndex(int index) {
         if (index < 0 || index >= data.size()) {
             throw new ListException("Index out of bounds: " + index);

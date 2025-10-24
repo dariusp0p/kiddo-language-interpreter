@@ -3,6 +3,7 @@ package model.adt;
 import utilities.StackException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 
 public class KiddoArrayStack<T> implements KiddoStack<T> {
     private final Deque<T> data = new ArrayDeque<>();
@@ -33,6 +34,11 @@ public class KiddoArrayStack<T> implements KiddoStack<T> {
     }
 
     @Override
+    public void clear() {
+        data.clear();
+    }
+
+    @Override
     public boolean isEmpty() {
         return data.isEmpty();
     }
@@ -40,5 +46,10 @@ public class KiddoArrayStack<T> implements KiddoStack<T> {
     @Override
     public int size() {
         return data.size();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return data.iterator();
     }
 }

@@ -1,14 +1,13 @@
 package model.state;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import model.adt.KiddoDictionary;
+import model.adt.KiddoHashMapDictionary;
 import model.type.Type;
 import model.value.Value;
 import utilities.SymbolTableException;
 
 public class MapSymbolTable implements SymbolTable {
-    private final Map<String, Value> map = new HashMap<>();
+    private final KiddoDictionary<String, Value> map = new KiddoHashMapDictionary<>();
 
     private void validateVariableName(String variableName) {
         if (variableName == null || variableName.isBlank()) {
