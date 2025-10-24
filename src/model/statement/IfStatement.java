@@ -4,7 +4,7 @@ import model.expression.Expression;
 import model.state.ProgramState;
 import model.value.BooleanValue;
 import model.value.Value;
-import utilities.KiddoException;
+import utilities.StatementException;
 
 public record IfStatement (Expression condition, Statement thenBranch, Statement elseBranch) implements Statement {
 
@@ -18,7 +18,7 @@ public record IfStatement (Expression condition, Statement thenBranch, Statement
                 programState.executionStack().push(elseBranch);
             }
         } else {
-            throw new KiddoException("Condition expression does not evaluate to a boolean!");
+            throw new StatementException("Condition expression does not evaluate to a boolean!");
         }
         return programState;
     }
