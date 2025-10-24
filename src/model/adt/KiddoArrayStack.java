@@ -52,4 +52,17 @@ public class KiddoArrayStack<T> implements KiddoStack<T> {
     public Iterator<T> iterator() {
         return data.iterator();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<T> it = data.iterator();
+        boolean first = true;
+        while (it.hasNext()) {
+            if (!first) sb.append(", ");
+            first = false;
+            sb.append(it.next());
+        }
+        return sb.toString();
+    }
 }

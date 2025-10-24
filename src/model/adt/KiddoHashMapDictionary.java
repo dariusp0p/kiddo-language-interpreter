@@ -61,4 +61,9 @@ public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
     public Set<K> keySet() {
         return Collections.unmodifiableSet(data.keySet());
     }
+
+    @Override
+    public String toString() {
+        return data.toString();
+    }
 }
