@@ -13,7 +13,7 @@ public record AssignmentStatement(Expression expression, String variableName) im
         SymbolTable symbolTable = programState.symbolTable();
         if (!symbolTable.isDefined(variableName)) throw new StatementException("Variable not defined!");
         Value value = expression.evaluate(symbolTable);
-        if (!value.getType().equals(symbolTable.getType(variableName))) throw new StatementException("Type mismatch");
+        if (!value.getType().equals(symbolTable.getType(variableName))) throw new StatementException("Type mismatch!");
         symbolTable.update(variableName, value);
         return programState;
     }

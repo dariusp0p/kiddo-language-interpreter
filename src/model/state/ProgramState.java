@@ -18,4 +18,3 @@ public record ProgramState
                 (originalProgram == null ? "null" : originalProgram.toString()) + "\n";
     }
 }
-

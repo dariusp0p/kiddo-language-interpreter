@@ -28,7 +28,7 @@ public class UI {
     public void run() {
         while (true) {
             printMenu();
-            System.out.print("choice> ");
+            System.out.print(">>> ");
             String line = scanner.nextLine().trim();
             if (line.isEmpty()) continue;
 
@@ -47,14 +47,12 @@ public class UI {
                     if (descriptions.containsKey(choice)) {
                         selectedId = choice;
                         System.out.println("Selected program " + choice + ": " + descriptions.get(choice));
-                        System.out.print("Run it now? (y/n) ");
-                        String yn = scanner.nextLine().trim();
-                        if ("y".equalsIgnoreCase(yn)) runSelected();
+                        runSelected();
                     } else {
-                        System.out.println("Unknown program id: " + choice);
+                        System.out.println("Unknown program number: " + choice);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Enter a program number, 'r' to run, or 0 to exit.");
+                    System.out.println("Invalid input! Enter a program number or 0 to exit.");
                 }
             }
         }
@@ -67,16 +65,15 @@ public class UI {
             System.out.printf("  %d)%s %s%n", e.getKey(), mark, e.getValue());
         }
         System.out.println("\nCommands:");
-        System.out.println("  <number>   - select a program (and optionally run it)");
-        System.out.println("  r or run   - run the currently selected program");
-        System.out.println("  0          - exit");
+        System.out.println("  <number>   - select a program to run");
+        System.out.println("  0          - exit\n");
     }
 
     private void runSelected() {
         try {
             Supplier<Statement> supplier = suppliers.get(selectedId);
             if (supplier == null) {
-                System.out.println("No supplier for selected program.");
+                System.out.println("No supplier for selected program!");
                 return;
             }
             Statement program = supplier.get();

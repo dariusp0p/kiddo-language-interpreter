@@ -20,7 +20,8 @@ public class Controller {
     public void allStep() {
         ProgramState programState = repo.getCurrentProgramState();
         while (!programState.executionStack().isEmpty()) {
-            oneStep(programState);
+            ProgramState currentState = oneStep(programState);
+            System.out.println(currentState.toString());
         }
     }
 
