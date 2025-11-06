@@ -7,6 +7,7 @@ import model.statement.*;
 import model.type.Type;
 import model.value.IntegerValue;
 import model.value.BooleanValue;
+import model.value.StringValue;
 
 public class ProgramExamples {
     public static Statement example1() {
@@ -78,6 +79,41 @@ public class ProgramExamples {
                                                 new AssignmentStatement(new ConstantExpression(new IntegerValue(3)), "v")
                                         ),
                                         new PrintStatement(new VariableExpression("v"))
+                                )
+                        )
+                )
+        );
+    }
+
+    public static Statement example4() {
+        // string varf;
+        // varf="test.in";
+        // openRFile(varf);
+        // int varc;
+        // readFile(varf,varc); print(varc);
+        // readFile(varf,varc); print(varc);
+        // closeRFile(varf);
+        return new CompoundStatement(
+                new VariableDeclarationStatement(Type.STRING, "varf"),
+                new CompoundStatement(
+                        new AssignmentStatement(new ConstantExpression(new StringValue("./data/test.in")), "varf"),
+                        new CompoundStatement(
+                                new OpenReadFile(new VariableExpression("varf")),
+                                new CompoundStatement(
+                                        new VariableDeclarationStatement(Type.INTEGER, "varc"),
+                                        new CompoundStatement(
+                                                new ReadFile(new VariableExpression("varf"), "varc"),
+                                                new CompoundStatement(
+                                                        new PrintStatement(new VariableExpression("varc")),
+                                                        new CompoundStatement(
+                                                                new ReadFile(new VariableExpression("varf"), "varc"),
+                                                                new CompoundStatement(
+                                                                        new PrintStatement(new VariableExpression("varc")),
+                                                                        new CloseReadFile(new VariableExpression("varf"))
+                                                                )
+                                                        )
+                                                )
+                                        )
                                 )
                         )
                 )
