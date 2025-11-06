@@ -3,7 +3,7 @@ package model.state;
 import model.statement.Statement;
 
 public record ProgramState
-        (ExecutionStack executionStack, SymbolTable symbolTable, Output output, Statement originalProgram) {
+        (ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, Statement originalProgram) {
 
     @Override
     public String toString() {
@@ -14,6 +14,8 @@ public record ProgramState
                 (symbolTable == null ? "null" : symbolTable.toString()) + "\n" +
                 "Output:\n" +
                 (output == null ? "null" : output.toString()) + "\n" +
+                "FileTable:\n" +
+                (fileTable == null ? "null" : fileTable.toString()) + "\n" +
                 "OriginalProgram:\n" +
                 (originalProgram == null ? "null" : originalProgram.toString()) + "\n";
     }
