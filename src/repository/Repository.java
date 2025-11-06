@@ -5,6 +5,7 @@ import model.state.ProgramState;
 import java.util.List;
 
 public interface Repository {
-    List<ProgramState> getProgramStates();
     ProgramState getCurrentProgramState();
+    List<ProgramState> getProgramStates();
+    void logProgramStateExecution();
 }
