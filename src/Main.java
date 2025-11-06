@@ -56,11 +56,24 @@ void main(String[] args) {
     MainRepository repo4 = new MainRepository(prg4, "logs/log4.txt");
     Controller ctr4 = new Controller(repo4);
 
+    Statement ex5 = ProgramExamples.example5();
+    ProgramState prg5 = new ProgramState(
+            new DequeExecutionStack(),
+            new MapSymbolTable(),
+            new ListOutput(),
+            new MapFileTable(),
+            ex5
+    );
+    prg5.executionStack().push(ex5);
+    MainRepository repo5 = new MainRepository(prg5, "logs/log5.txt");
+    Controller ctr5 = new Controller(repo5);
+
     TextMenu menu = new TextMenu();
     menu.addCommand(new ExitCommand("0", "exit"));
     menu.addCommand(new RunExampleCommand("1", ex1.toString(), ctr1));
     menu.addCommand(new RunExampleCommand("2", ex2.toString(), ctr2));
     menu.addCommand(new RunExampleCommand("3", ex3.toString(), ctr3));
     menu.addCommand(new RunExampleCommand("4", ex4.toString(), ctr4));
+    menu.addCommand(new RunExampleCommand("5", ex5.toString(), ctr5));
     menu.show();
 }
