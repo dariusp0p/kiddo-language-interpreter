@@ -19,17 +19,11 @@ public record ReadFile(Expression expression, String variableName) implements St
         if (variableName == null || variableName.isBlank()) throw new KiddoException("readFile: invalid variable name!");
 
         var symTable = programState.symbolTable();
-        if (!symTable.isDefined(variableName)) {
-            throw new KiddoException("readFile: variable \"" + variableName + "\" is not defined!");
-        }
-        if (symTable.getType(variableName) != Type.INTEGER) {
-            throw new KiddoException("readFile: variable \"" + variableName + "\" must be of type int!");
-        }
+        if (!symTable.isDefined(variableName)) throw new KiddoException("readFile: variable \"" + variableName + "\" is not defined!");
+        if (symTable.getType(variableName) != Type.INTEGER) throw new KiddoException("readFile: variable \"" + variableName + "\" must be of type int!");
 
         Value value = expression.evaluate(symTable);
-        if (!(value instanceof StringValue strVal)) {
-            throw new KiddoException("readFile: expression must evaluate to a string!");
-        }
+        if (!(value instanceof StringValue strVal)) throw new KiddoException("readFile: expression must evaluate to a string!");
         BufferedReader br = programState.fileTable().lookup(strVal);
 
         String line;

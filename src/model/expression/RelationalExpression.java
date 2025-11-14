@@ -14,15 +14,10 @@ public record RelationalExpression
     @Override
     public Value evaluate(SymbolTable symbolTable) {
         var leftTerm = left.evaluate(symbolTable);
-        if (isNotInteger(leftTerm)) {
-            throw new ExpressionException(String.format("%s is not a number!", leftTerm));
-        }
+        if (isNotInteger(leftTerm)) throw new ExpressionException(String.format("%s is not a number!", leftTerm));
         var leftValue = (IntegerValue) leftTerm;
-
         var rightTerm = right.evaluate(symbolTable);
-        if (isNotInteger(rightTerm)) {
-            throw new ExpressionException(String.format("%s is not a number!", rightTerm));
-        }
+        if (isNotInteger(rightTerm)) throw new ExpressionException(String.format("%s is not a number!", rightTerm));
         var rightValue = (IntegerValue) rightTerm;
 
         int left = leftValue.getValue();
@@ -41,10 +36,5 @@ public record RelationalExpression
 
     private boolean isNotInteger(Value term) {
         return term.getType() != Type.INTEGER;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("(%s %s %s)", left, operator, right);
     }
 }

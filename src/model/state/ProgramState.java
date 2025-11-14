@@ -7,16 +7,16 @@ public record ProgramState
 
     @Override
     public String toString() {
-        return "ProgramState:\n" +
-                "ExecutionStack:\n" +
+        return "=== ProgramState ===\n" +
+                "ExecutionStack: " +
                 (executionStack == null ? "null" : executionStack.toString()) + "\n" +
-                "SymbolTable:\n" +
+                "SymbolTable: " +
                 (symbolTable == null ? "null" : symbolTable.toString()) + "\n" +
-                "Output:\n" +
+                "Output: " +
                 (output == null ? "null" : output.toString()) + "\n" +
-                "FileTable:\n" +
+                "FileTable: " +
                 (fileTable == null ? "null" : fileTable.toString()) + "\n" +
-                "OriginalProgram:\n" +
+                "OriginalProgram: " +
                 (originalProgram == null ? "null" : originalProgram.toString()) + "\n";
     }
 }

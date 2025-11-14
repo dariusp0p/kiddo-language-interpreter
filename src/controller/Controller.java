@@ -26,8 +26,7 @@ public class Controller {
         }
     }
 
-    public String getCurrentProgramState() {
-        ProgramState programState = repo.getCurrentProgramState();
-        return programState.toString();
+    public ProgramState getCurrentProgramState() {
+        return repo.getCurrentProgramState();
     }
 }

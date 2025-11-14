@@ -70,10 +70,10 @@ void main(String[] args) {
 
     TextMenu menu = new TextMenu();
     menu.addCommand(new ExitCommand("0", "exit"));
-    menu.addCommand(new RunExampleCommand("1", ex1.toString(), ctr1));
-    menu.addCommand(new RunExampleCommand("2", ex2.toString(), ctr2));
-    menu.addCommand(new RunExampleCommand("3", ex3.toString(), ctr3));
-    menu.addCommand(new RunExampleCommand("4", ex4.toString(), ctr4));
-    menu.addCommand(new RunExampleCommand("5", ex5.toString(), ctr5));
+    menu.addCommand(new RunExampleCommand("1", "int v; v=2; Print(v)", ctr1));    menu.addCommand(new RunExampleCommand("2", ex2.toString(), ctr2));
+    menu.addCommand(new RunExampleCommand("2", "int a; int b; a = 2 + 3 * 5; b = a + 1; Print(b)", ctr2));
+    menu.addCommand(new RunExampleCommand("3", "bool a; int v; a = true; if a then v = 2 else v = 3; Print(v)", ctr3));
+    menu.addCommand(new RunExampleCommand("4", "string varf; varf=\"test.in\"; openRFile(varf); int varc; readFile(varf,varc); print(varc); readFile(varf,varc); print(varc); closeRFile(varf)", ctr4));
+    menu.addCommand(new RunExampleCommand("5", "int a; int b; a = 10; b = 5; if (a > b) then Print(a) else Print(b); int c; c = a - b; if (c >= 5) then Print(100) else Print(200)", ctr5));
     menu.show();
 }
