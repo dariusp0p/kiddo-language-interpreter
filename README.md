@@ -1,2 +1,2 @@
 # kiddo-language-interpreter
-Academic project. A language interpreter built in java.
+Academic Project. A language interpreter built in java.
