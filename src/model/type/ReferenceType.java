@@ -1,26 +1,15 @@
 package model.type;
 
-import model.value.ReferenceValue;
 import model.value.Value;
+import model.value.ReferenceValue;
+
+import java.util.Objects;
 
 public class ReferenceType implements Type {
     private final Type inner;
 
-    public ReferenceType(Type inner) {
-        this.inner = inner;
-    }
-
-    public Type getInner() {
-        return inner;
-    }
-
-    @Override
-    public boolean isInstance(Object another) {
-        if (another instanceof ReferenceValue) {
-            return inner.isInstance(((ReferenceValue) another).locationType());
-        }
-        return false;
-    }
+    public ReferenceType(Type inner) { this.inner = inner; }
+    public Type getInner() { return inner; }
 
     @Override
     public Value getDefaultValue() {
@@ -35,13 +24,12 @@ public class ReferenceType implements Type {
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        if (!(other instanceof ReferenceType)) return false;
-        ReferenceType that = (ReferenceType) other;
+        if (!(other instanceof ReferenceType that)) return false;
         return this.inner.equals(that.inner);
     }
 
     @Override
     public int hashCode() {
-        return 31 * inner.hashCode();
+        return Objects.hash(inner);
     }
 }

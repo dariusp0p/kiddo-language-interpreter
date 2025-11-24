@@ -1,14 +1,9 @@
 package model.type;
 
-import model.value.IntegerValue;
 import model.value.Value;
+import model.value.IntegerValue;
 
 public class IntegerType implements Type {
-    @Override
-    public boolean isInstance(Object another) {
-        return another instanceof IntegerValue;
-    }
-
     @Override
     public Value getDefaultValue() {
         return new IntegerValue(0);
@@ -26,6 +21,6 @@ public class IntegerType implements Type {
 
     @Override
     public int hashCode() {
-        return Integer.class.hashCode();
+        return IntegerType.class.hashCode();
     }
 }

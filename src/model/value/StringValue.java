@@ -4,7 +4,6 @@ import model.type.Type;
 import model.type.StringType;
 
 public record StringValue(String value) implements Value {
-
     @Override
     public Type getType() {
         return new StringType();

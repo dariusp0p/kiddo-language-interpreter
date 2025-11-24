@@ -1,37 +1,70 @@
 package model.statement;
 
+import exceptions.AdtException;
+import exceptions.ExpressionException;
+import exceptions.StatementException;
 import model.expression.Expression;
-import model.state.ProgramState;
 import model.state.HeapTable;
+import model.state.ProgramState;
 import model.state.SymbolTable;
+import model.type.ReferenceType;
 import model.value.ReferenceValue;
 import model.value.Value;
-import model.type.ReferenceType;
 
 public record NewStatement(String varName, Expression expression) implements Statement {
 
     @Override
-    public ProgramState execute(ProgramState programState) {
+    public ProgramState execute(ProgramState programState) throws StatementException {
+        if (programState == null) throw new StatementException("new: ProgramState cannot be null");
+        if (varName == null || varName.isBlank()) throw new StatementException("new: variable name cannot be null or blank");
+
         SymbolTable symTable = programState.symbolTable();
         HeapTable heapTable = programState.heapTable();
 
-        if (!symTable.isDefined(varName)) {
-            throw new RuntimeException("Variable " + varName + " is not defined in the Symbol Table.");
-        }
-        Value varValue = symTable.lookup(varName);
-        if (!(varValue.getType() instanceof ReferenceType refType)) {
-            throw new RuntimeException("Variable " + varName + " is not of ReferenceType.");
+        try {
+            if (!symTable.isDefined(varName)) {
+                throw new StatementException("new: variable \"" + varName + "\" is not defined");
+            }
+        } catch (AdtException e) {
+            throw new StatementException("new: failed checking if variable \"" + varName + "\" is defined", e);
         }
 
-        Value evaluatedValue = expression.evaluate(symTable, heapTable);
+        Value varValue;
+        try {
+            varValue = symTable.lookup(varName);
+        } catch (AdtException e) {
+            throw new StatementException("new: failed to lookup variable \"" + varName + "\"", e);
+        }
+
+        if (!(varValue.getType() instanceof ReferenceType refType)) {
+            throw new StatementException("new: variable \"" + varName + "\" is not of ReferenceType");
+        }
+
+        Value evaluatedValue;
+        try {
+            evaluatedValue = expression.evaluate(symTable, heapTable);
+        } catch (ExpressionException e) {
+            throw new StatementException("new: failed to evaluate expression " + expression, e);
+        }
 
         if (!evaluatedValue.getType().equals(refType.getInner())) {
-            throw new RuntimeException("Type of the evaluated expression does not match the locationType of " + varName + ".");
+            throw new StatementException("new: type mismatch — variable \"" + varName
+                    + "\" expects inner type " + refType.getInner()
+                    + " but expression evaluated to type " + evaluatedValue.getType());
         }
 
-        int newAddress = heapTable.allocate(evaluatedValue);
+        int address;
+        try {
+            address = heapTable.allocate(evaluatedValue);
+        } catch (AdtException e) {
+            throw new StatementException("new: failed to allocate value in heap", e);
+        }
 
-        symTable.update(varName, new ReferenceValue(newAddress, refType.getInner()));
+        try {
+            symTable.define(varName, new ReferenceValue(address, refType.getInner()));
+        } catch (AdtException e) {
+            throw new StatementException("new: failed to update variable \"" + varName + "\"", e);
+        }
 
         return programState;
     }

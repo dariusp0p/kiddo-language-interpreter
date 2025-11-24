@@ -1,14 +1,9 @@
 package model.type;
 
-import model.value.BooleanValue;
 import model.value.Value;
+import model.value.BooleanValue;
 
 public class BooleanType implements Type {
-    @Override
-    public boolean isInstance(Object another) {
-        return another instanceof BooleanValue;
-    }
-
     @Override
     public Value getDefaultValue() {
         return new BooleanValue(false);
@@ -28,5 +23,4 @@ public class BooleanType implements Type {
     public int hashCode() {
         return BooleanType.class.hashCode();
     }
-
 }

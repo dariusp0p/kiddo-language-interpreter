@@ -1,40 +1,53 @@
 package model.expression;
 
+import exceptions.ExpressionException;
 import model.state.HeapTable;
 import model.state.SymbolTable;
-import model.type.IntegerType;
-import model.type.Type;
 import model.value.IntegerValue;
 import model.value.Value;
-import utilities.ExpressionException;
 
-public record ArithmeticExpression
-        (Expression left, Expression right, String operator)
+public record ArithmeticExpression(Expression left, Expression right, String operator)
         implements Expression {
 
     @Override
-    public Value evaluate(SymbolTable symbolTable, HeapTable heapTable) {
-        var leftTerm = left.evaluate(symbolTable,  heapTable);
-        if (isNotInteger(leftTerm)) throw new ExpressionException(String.format("%s is not a number!", leftTerm));
-        var leftValue = (IntegerValue) leftTerm;
-        var rightTerm = right.evaluate(symbolTable, heapTable);
-        if (isNotInteger(rightTerm)) throw new ExpressionException(String.format("%s is not a number!", rightTerm));
-        var rightValue = (IntegerValue) rightTerm;
+    public Value evaluate(SymbolTable symbolTable, HeapTable heapTable) throws ExpressionException {
+        Value leftTerm;
+        Value rightTerm;
 
-        if ("/".equals(operator) && rightValue.value() == 0) {
-            throw new ExpressionException("Division by zero!");
+        try {
+            leftTerm = left.evaluate(symbolTable, heapTable);
+        } catch (ExpressionException e) {
+            throw new ExpressionException("Failed to evaluate left operand in (" + left + " " + operator + " " + right + ")", e);
+        }
+
+        if (!(leftTerm instanceof IntegerValue(int value))) {
+            throw new ExpressionException("Left operand is not an integer: " + leftTerm);
+        }
+
+        try {
+            rightTerm = right.evaluate(symbolTable, heapTable);
+        } catch (ExpressionException e) {
+            throw new ExpressionException("Failed to evaluate right operand in (" + left + " " + operator + " " + right + ")", e);
+        }
+
+        if (!(rightTerm instanceof IntegerValue(int value1))) {
+            throw new ExpressionException("Right operand is not an integer: " + rightTerm);
+        }
+
+        if (operator == null) {
+            throw new ExpressionException("Operator must not be null");
+        }
+
+        if ("/".equals(operator) && value1 == 0) {
+            throw new ExpressionException("Division by zero in expression: (" + left + " / " + right + ")");
         }
 
         return switch (operator) {
-            case "+" -> new IntegerValue(leftValue.value() + rightValue.value());
-            case "-" -> new IntegerValue(leftValue.value() - rightValue.value());
-            case "*" -> new IntegerValue(leftValue.value() * rightValue.value());
-            case "/" -> new IntegerValue(leftValue.value() / rightValue.value());
-            default -> throw new ExpressionException("Unknown operator: " + operator);
+            case "+" -> new IntegerValue(value + value1);
+            case "-" -> new IntegerValue(value - value1);
+            case "*" -> new IntegerValue(value * value1);
+            case "/" -> new IntegerValue(value / value1);
+            default  -> throw new ExpressionException("Unknown arithmetic operator: " + operator);
         };
-    }
-
-    private boolean isNotInteger(Value term) {
-        return !(term.getType() instanceof IntegerType);
     }
 }

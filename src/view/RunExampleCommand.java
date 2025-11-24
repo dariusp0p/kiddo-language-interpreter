@@ -1,7 +1,10 @@
 package view;
 
 import controller.Controller;
-import utilities.KiddoException;
+import exceptions.KiddoException;
+
+import java.time.Duration;
+import java.time.Instant;
 
 public class RunExampleCommand extends Command {
     private final Controller controller;
@@ -13,16 +16,23 @@ public class RunExampleCommand extends Command {
 
     @Override
     public void execute() {
+        long startNs = System.nanoTime();
         try {
-            controller.allStep();
-            System.out.println("Program execution completed.");
-            System.out.println(controller.getCurrentProgramState().output());
+
+            controller.allSteps();
+            System.out.println("Program execution completed!");
+            System.out.println("Output: " + controller.getCurrentProgramState().output());
 
         } catch (KiddoException ke) {
             System.out.println("Runtime error: " + ke.getMessage());
         } catch (Exception ex) {
             System.out.println("Error during execution: " + ex.getMessage());
             ex.printStackTrace(System.out);
+        } finally {
+            long endNs = System.nanoTime();
+            double millis = (endNs - startNs) / 1_000_000.0;
+            System.out.printf("Elapsed time: %.3f ms%n", millis);
+            System.out.println();
         }
     }
 }

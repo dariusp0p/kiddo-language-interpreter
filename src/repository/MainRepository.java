@@ -1,7 +1,7 @@
 package repository;
 
+import exceptions.RepositoryException;
 import model.state.ProgramState;
-import utilities.KiddoException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -19,14 +19,14 @@ public class MainRepository implements Repository {
         this.logFilePath = logFilePath;
     }
 
-    public MainRepository(ProgramState initialState,  String logFilePath) {
+    public MainRepository(ProgramState initialState, String logFilePath) {
         this(logFilePath);
         if (initialState != null) this.programStates.add(initialState);
     }
 
     @Override
-    public ProgramState getCurrentProgramState() {
-        if (programStates.isEmpty()) throw new KiddoException("No program states in repository!");
+    public ProgramState getCurrentProgramState() throws RepositoryException {
+        if (programStates.isEmpty()) throw new RepositoryException("Repository contains no program states.");
         return programStates.getLast();
     }
 
@@ -35,20 +35,22 @@ public class MainRepository implements Repository {
         return programStates;
     }
 
-    public void addProgramState(ProgramState state) {
-        if (state == null) throw new KiddoException("State cannot be null!");
+    public void addProgramState(ProgramState state) throws RepositoryException {
+        if (state == null) throw new RepositoryException("Cannot add null ProgramState to repository.");
         programStates.add(state);
     }
 
     @Override
-    public void logProgramStateExecution() {
+    public void logProgramStateExecution() throws RepositoryException {
         ProgramState state = getCurrentProgramState();
-        try (PrintWriter logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)))) {
-            logFile.println(state.toString());
+
+        try (PrintWriter logFile = new PrintWriter(
+                new BufferedWriter(new FileWriter(logFilePath, true))
+        )) {
+            logFile.println(state);
             logFile.println();
-            logFile.flush();
-        } catch (IOException _) {
-            throw new KiddoException("Failed to log ProgramState to file: " + logFilePath);
+        } catch (IOException e) {
+            throw new RepositoryException("Failed to write ProgramState to log file: " + logFilePath, e);
         }
     }
 }

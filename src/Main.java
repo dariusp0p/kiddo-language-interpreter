@@ -1,5 +1,6 @@
 import controller.Controller;
 import examples.ProgramExamples;
+import exceptions.AdtException;
 import model.state.*;
 import model.statement.Statement;
 import repository.MainRepository;
@@ -7,7 +8,7 @@ import view.ExitCommand;
 import view.RunExampleCommand;
 import view.TextMenu;
 
-void main(String[] args) {
+void main(String[] args) throws AdtException {
 
     // Example 1
     Statement ex1 = ProgramExamples.example1();
@@ -155,7 +156,6 @@ void main(String[] args) {
     menu.addCommand(new RunExampleCommand("9", "Ref int v; new(v,20); Ref Ref int a; new(a,v); new(v,30); print(rH(rH(a)))", ctr9));
     menu.addCommand(new RunExampleCommand("10", "Ref Ref Ref int r; int v; v = 99; Ref int p; new(p,v); Ref Ref int q; new(q,p); new(r,q); print(rH(rH(rH(r)))) (expected 99)", ctr10));
     menu.addCommand(new RunExampleCommand("11", "SAFE GC test: Ref int v; new(v,1); Ref Ref int a; new(a,v); loop new(v,x) twice; print(rH(rH(a)))", ctr11));
-
 
     menu.show();
 }

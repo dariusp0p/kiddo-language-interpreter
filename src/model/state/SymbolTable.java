@@ -1,16 +1,14 @@
 package model.state;
 
+import exceptions.AdtException;
 import model.adt.KiddoDictionary;
 import model.type.Type;
 import model.value.Value;
 
-import java.lang.invoke.StringConcatFactory;
-
 public interface SymbolTable {
-    void define(String variableName, Value value);
-    boolean isDefined(String variableName);
-    Value lookup(String variableName);
-    Type getType(String variableName);
-    void update(String variableName, Value value);
+    void define(String variableName, Value value) throws AdtException;
+    boolean isDefined(String variableName) throws AdtException;
+    Value lookup(String variableName) throws AdtException;
+    Type getType(String variableName) throws AdtException;
     KiddoDictionary<String, Value> getContent();
 }

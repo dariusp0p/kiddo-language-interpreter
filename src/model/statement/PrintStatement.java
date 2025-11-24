@@ -1,18 +1,35 @@
 package model.statement;
 
+import exceptions.AdtException;
+import exceptions.ExpressionException;
+import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.ProgramState;
 import model.value.Value;
 
 public record PrintStatement(Expression expression) implements Statement {
-
     @Override
-    public ProgramState execute(ProgramState programState) {
-        Value value = expression.evaluate(programState.symbolTable(),  programState.heapTable());
-        programState.output().add(value);
+    public ProgramState execute(ProgramState programState) throws StatementException {
+        Value value;
+
+        try {
+            value = expression.evaluate(programState.symbolTable(),
+                    programState.heapTable());
+        } catch (ExpressionException e) {
+            throw new StatementException("Failed to evaluate print expression: " + expression, e);
+        }
+
+        try {
+            programState.output().add(value);
+        } catch (AdtException e) {
+            throw new StatementException("Failed to add value to output", e);
+        }
+
         return programState;
     }
 
     @Override
-    public String toString() { return "print(" + expression + ")"; }
+    public String toString() {
+        return "print(" + expression + ")";
+    }
 }

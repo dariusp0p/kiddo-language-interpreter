@@ -4,11 +4,6 @@ import model.value.Value;
 
 public class NoneType implements Type {
     @Override
-    public boolean isInstance(Object another) {
-        return another == Value.NONE;
-    }
-
-    @Override
     public Value getDefaultValue() {
         return Value.NONE;
     }
@@ -25,6 +20,6 @@ public class NoneType implements Type {
 
     @Override
     public int hashCode() {
-        return 0;
+        return NoneType.class.hashCode();
     }
 }
