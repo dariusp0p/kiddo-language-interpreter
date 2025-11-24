@@ -1,16 +1,17 @@
 package model.value;
 
 import model.type.Type;
+import model.type.IntegerType;
 
-public class IntegerValue implements Value {
-    private final int value;
-    public IntegerValue(int value) { this.value = value; }
-
-    public int getValue() { return value; }
+public record IntegerValue(int value) implements Value {
 
     @Override
-    public Type getType() { return Type.INTEGER; }
+    public Type getType() {
+        return new IntegerType();
+    }
 
     @Override
-    public String toString() { return Integer.toString(value); }
+    public String toString() {
+        return Integer.toString(value);
+    }
 }
