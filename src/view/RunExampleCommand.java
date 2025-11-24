@@ -4,7 +4,7 @@ import controller.Controller;
 import utilities.KiddoException;
 
 public class RunExampleCommand extends Command {
-    private Controller controller;
+    private final Controller controller;
 
     public RunExampleCommand(String key, String description, Controller ctr) {
         super(key, description);
@@ -16,7 +16,8 @@ public class RunExampleCommand extends Command {
         try {
             controller.allStep();
             System.out.println("Program execution completed.");
-            System.out.println(controller.getCurrentProgramState());
+            System.out.println(controller.getCurrentProgramState().output());
+
         } catch (KiddoException ke) {
             System.out.println("Runtime error: " + ke.getMessage());
         } catch (Exception ex) {

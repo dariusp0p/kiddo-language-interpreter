@@ -20,13 +20,10 @@ public record OpenReadFile(Expression expression) implements Statement {
 
         Value value = expression.evaluate(programState.symbolTable());
 
-        if (!(value instanceof StringValue strVal)) {
-            throw new KiddoException("openRFile: expression must evaluate to a string!");
-        }
+        if (!(value instanceof StringValue strVal)) throw new KiddoException("openRFile: expression must evaluate to a string!");
+
         FileTable fileTable = programState.fileTable();
-        if (fileTable.isDefined(strVal)) {
-            throw new KiddoException("openRFile: file already opened: " + strVal);
-        }
+        if (fileTable.isDefined(strVal)) throw new KiddoException("openRFile: file already opened: " + strVal);
 
         String path = strVal.getValue();
         try {

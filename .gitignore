@@ -32,3 +32,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Data ###
+data/
+data/*
+data

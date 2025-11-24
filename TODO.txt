@@ -1,0 +1,3 @@
+- remove original program
+- use isInstance
+- verify if I can use None Type
