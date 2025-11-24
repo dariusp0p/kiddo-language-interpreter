@@ -1,6 +1,6 @@
 package model.adt;
 
-import utilities.ListException;
+import exceptions.AdtException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,39 +10,33 @@ public class KiddoArrayList<T> implements KiddoList<T> {
     private final ArrayList<T> data = new ArrayList<>();
 
     @Override
-    public void add(T value) {
-        if (value == null) {
-            throw new ListException("Cannot add null to the list");
-        }
+    public void add(T value) throws AdtException {
+        if (value == null) throw new AdtException("Value must not be null");
         data.add(value);
     }
 
     @Override
-    public T get(int index) {
-        checkIndex(index);
+    public T get(int index) throws AdtException {
+        if (invalidIndex(index)) throw new AdtException("Index out of bounds: " + index);
         return data.get(index);
     }
 
     @Override
-    public T remove(int index) {
-        checkIndex(index);
+    public T remove(int index) throws AdtException {
+        if (invalidIndex(index)) throw new AdtException("Index out of bounds: " + index);
         return data.remove(index);
     }
 
     @Override
-    public void set(int index, T value) {
-        if (value == null) {
-            throw new ListException("Cannot set null in the list");
-        }
-        checkIndex(index);
+    public void set(int index, T value) throws AdtException {
+        if (value == null) throw new AdtException("Value must not be null");
+        if (invalidIndex(index)) throw new AdtException("Index out of bounds: " + index);
         data.set(index, value);
     }
 
     @Override
-    public boolean contains(T value) {
-        if (value == null) {
-            throw new ListException("Value must not be null");
-        }
+    public boolean contains(T value) throws AdtException {
+        if (value == null) throw new AdtException("Value must not be null");
         return data.contains(value);
     }
 
@@ -57,6 +51,16 @@ public class KiddoArrayList<T> implements KiddoList<T> {
     }
 
     @Override
+    public void clear() {
+        data.clear();
+    }
+
+    @Override
+    public java.util.Iterator<T> iterator() {
+        return data.iterator();
+    }
+
+    @Override
     public List<T> asList() {
         return Collections.unmodifiableList(data);
     }
@@ -66,9 +70,7 @@ public class KiddoArrayList<T> implements KiddoList<T> {
         return data.toString();
     }
 
-    private void checkIndex(int index) {
-        if (index < 0 || index >= data.size()) {
-            throw new ListException("Index out of bounds: " + index);
-        }
+    private boolean invalidIndex(int index) {
+        return (index < 0 || index >= data.size());
     }
 }

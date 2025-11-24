@@ -1,6 +1,7 @@
 package model.adt;
 
-import utilities.StackException;
+import exceptions.AdtException;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
@@ -9,28 +10,21 @@ public class KiddoArrayStack<T> implements KiddoStack<T> {
     private final Deque<T> data = new ArrayDeque<>();
 
     @Override
-    public void push(T value) {
-        if (value == null) {
-            throw new StackException("Cannot push null onto the stack!");
-        }
+    public void push(T value) throws AdtException {
+        if (value == null) throw new AdtException("Value must not be null");
         data.push(value);
     }
 
     @Override
-    public T pop() {
-        if (data.isEmpty()) {
-            throw new StackException("Cannot pop from empty stack!");
-        }
+    public T pop() throws AdtException {
+        if (data.isEmpty()) throw new AdtException("The stack is empty");
         return data.pop();
     }
 
     @Override
-    public T peek() {
-        T top = data.peek();
-        if (top == null) {
-            throw new StackException("Cannot peek from empty stack!");
-        }
-        return top;
+    public T peek() throws AdtException {
+        if (data.isEmpty()) throw new AdtException("The stack is empty");
+        return data.peek();
     }
 
     @Override
@@ -56,12 +50,11 @@ public class KiddoArrayStack<T> implements KiddoStack<T> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        Iterator<T> it = data.iterator();
         boolean first = true;
-        while (it.hasNext()) {
+        for (T value : data) {
             if (!first) sb.append(", ");
             first = false;
-            sb.append(it.next());
+            sb.append(value);
         }
         return sb.toString();
     }

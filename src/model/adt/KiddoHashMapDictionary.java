@@ -1,60 +1,47 @@
 package model.adt;
 
-import utilities.DictionaryException;
+import exceptions.AdtException;
 
 import java.util.*;
 
 public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
-    private final HashMap<K, V> data = new HashMap<K, V>();
+    private final HashMap<K, V> data = new HashMap<>();
 
-    public KiddoHashMapDictionary(Map<K, V> integerValueMap) {
-        if (integerValueMap == null) {
-            throw new DictionaryException("Input map must not be null");
-        }
-        this.data.putAll(integerValueMap);
+    public KiddoHashMapDictionary(Map<K, V> initial) throws AdtException {
+        if (initial == null) throw new AdtException("Initial must not be null");
+        data.putAll(initial);
     }
 
     @Override
-    public void put(K key, V value) {
-        if (key == null || value == null) {
-            throw new DictionaryException("Key and value must not be null");
-        }
+    public void put(K key, V value) throws AdtException {
+        if (key == null) throw new AdtException("Key must not be null");
+        if (value == null) throw new AdtException("Value must not be null");
         data.put(key, value);
     }
 
     @Override
-    public V get(K key) {
-        if (key == null) {
-            throw new DictionaryException("Key must not be null");
-        }
-        if (!data.containsKey(key)) {
-            throw new DictionaryException("Key not found: " + key);
-        }
+    public V get(K key) throws AdtException {
+        if (key == null) throw new AdtException("Key must not be null");
+        if (!data.containsKey(key)) throw new AdtException("Key not found: " + key);
         return data.get(key);
     }
 
     @Override
-    public V remove(K key) {
-        if (key == null) {
-            throw new DictionaryException("Key must not be null");
-        }
-        if (!data.containsKey(key)) {
-            throw new DictionaryException("Key not found: " + key);
-        }
+    public V remove(K key) throws AdtException {
+        if (key == null) throw new AdtException("Key must not be null");
+        if (!data.containsKey(key)) throw new AdtException("Key not found: " + key);
         return data.remove(key);
+    }
+
+    @Override
+    public boolean containsKey(K key) throws AdtException {
+        if (key == null) throw new AdtException("Key must not be null");
+        return data.containsKey(key);
     }
 
     @Override
     public void clear() {
         data.clear();
-    }
-
-    @Override
-    public boolean containsKey(K key) {
-        if (key == null) {
-            throw new DictionaryException("Key must not be null");
-        }
-        return data.containsKey(key);
     }
 
     @Override
@@ -73,14 +60,27 @@ public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
     }
 
     @Override
-    public List<V> values() { return List.copyOf(data.values()); }
+    public List<V> values() {
+        return List.copyOf(data.values());
+    }
 
     @Override
-    public HashMap<K, V> toMap() {
-        return new HashMap<>(data);
+    public Map<K, V> toMap() {
+        return Collections.unmodifiableMap(new HashMap<>(data));
     }
+
     @Override
     public String toString() {
-        return data.toString();
+        StringBuilder sb = new StringBuilder("{ ");
+        boolean first = true;
+
+        for (Map.Entry<K, V> entry : data.entrySet()) {
+            if (!first) sb.append(", ");
+            first = false;
+            sb.append(entry.getKey()).append(" = ").append(entry.getValue());
+        }
+
+        sb.append(" }");
+        return sb.toString();
     }
 }
