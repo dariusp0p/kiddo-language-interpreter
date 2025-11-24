@@ -1,28 +1,38 @@
 package model.statement;
 
+import exceptions.AdtException;
+import exceptions.ExpressionException;
+import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.ProgramState;
-import model.value.Value;
 import model.value.BooleanValue;
-import utilities.KiddoException;
+import model.value.Value;
 
 public record WhileStatement(Expression condition, Statement body) implements Statement {
-
     @Override
-    public ProgramState execute(ProgramState programState) {
+    public ProgramState execute(ProgramState programState) throws StatementException {
         var stack = programState.executionStack();
         var symTable = programState.symbolTable();
         var heapTable = programState.heapTable();
+        Value condValue;
 
-        Value condVal = condition.evaluate(symTable, heapTable);
+        try {
+            condValue = condition.evaluate(symTable, heapTable);
+        } catch (ExpressionException e) {
+            throw new StatementException("Failed to evaluate WHILE condition: " + condition, e);
+        }
 
-        if (!(condVal instanceof BooleanValue(boolean value))) {
-            throw new KiddoException("condition exp is not a boolean");
+        if (!(condValue instanceof BooleanValue(boolean value))) {
+            throw new StatementException("WHILE condition is not a boolean: " + condValue);
         }
 
         if (value) {
-            stack.push(this);
-            stack.push(body);
+            try {
+                stack.push(this);
+                stack.push(body);
+            } catch (AdtException e) {
+                throw new StatementException("Failed to push WHILE components onto execution stack", e);
+            }
         }
 
         return programState;
