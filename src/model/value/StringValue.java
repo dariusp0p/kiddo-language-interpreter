@@ -1,16 +1,17 @@
 package model.value;
 
 import model.type.Type;
+import model.type.StringType;
 
-public class StringValue implements Value {
-    private final String value;
-    public StringValue(String value) { this.value = value; }
-
-    public String getValue() { return value; }
+public record StringValue(String value) implements Value {
 
     @Override
-    public Type getType() { return Type.STRING; }
+    public Type getType() {
+        return new StringType();
+    }
 
     @Override
-    public String toString() { return getValue(); }
+    public String toString() {
+        return value();
+    }
 }

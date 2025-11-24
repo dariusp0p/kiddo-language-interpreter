@@ -1,9 +1,7 @@
 package model.state;
 
-import model.statement.Statement;
-
 public record ProgramState
-        (ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, Statement originalProgram) {
+        (ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, HeapTable heapTable) {
 
     @Override
     public String toString() {
@@ -16,7 +14,7 @@ public record ProgramState
                 (output == null ? "null" : output.toString()) + "\n" +
                 "FileTable: " +
                 (fileTable == null ? "null" : fileTable.toString()) + "\n" +
-                "OriginalProgram: " +
-                (originalProgram == null ? "null" : originalProgram.toString()) + "\n";
+                "HeapTable: " +
+                (heapTable == null ? "null" : heapTable.toString()) + "\n";
     }
 }

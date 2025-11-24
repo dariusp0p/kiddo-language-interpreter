@@ -2,12 +2,17 @@ package model.adt;
 
 import utilities.DictionaryException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
     private final HashMap<K, V> data = new HashMap<K, V>();
+
+    public KiddoHashMapDictionary(Map<K, V> integerValueMap) {
+        if (integerValueMap == null) {
+            throw new DictionaryException("Input map must not be null");
+        }
+        this.data.putAll(integerValueMap);
+    }
 
     @Override
     public void put(K key, V value) {
@@ -40,6 +45,11 @@ public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
     }
 
     @Override
+    public void clear() {
+        data.clear();
+    }
+
+    @Override
     public boolean containsKey(K key) {
         if (key == null) {
             throw new DictionaryException("Key must not be null");
@@ -62,6 +72,13 @@ public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
         return Collections.unmodifiableSet(data.keySet());
     }
 
+    @Override
+    public List<V> values() { return List.copyOf(data.values()); }
+
+    @Override
+    public HashMap<K, V> toMap() {
+        return new HashMap<>(data);
+    }
     @Override
     public String toString() {
         return data.toString();
