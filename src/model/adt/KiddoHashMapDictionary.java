@@ -7,6 +7,9 @@ import java.util.*;
 public class KiddoHashMapDictionary<K, V> implements KiddoDictionary<K, V> {
     private final HashMap<K, V> data = new HashMap<>();
 
+    public KiddoHashMapDictionary() {
+        // empty map no failure
+    }
     public KiddoHashMapDictionary(Map<K, V> initial) throws AdtException {
         if (initial == null) throw new AdtException("Initial must not be null");
         data.putAll(initial);

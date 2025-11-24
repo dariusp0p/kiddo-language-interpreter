@@ -1,34 +1,26 @@
 package model.state;
 
+import exceptions.AdtException;
 import model.adt.KiddoStack;
 import model.adt.KiddoArrayStack;
 import model.statement.Statement;
-import utilities.ExecutionStackException;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 public class DequeExecutionStack implements ExecutionStack {
     private final KiddoStack<Statement> stack = new KiddoArrayStack<>();
 
     @Override
-    public void push(Statement element) {
-        Objects.requireNonNull(element, "element");
+    public void push(Statement element) throws AdtException {
         stack.push(element);
     }
 
     @Override
-    public Statement pop() {
+    public Statement pop() throws AdtException {
         return stack.pop();
     }
 
     @Override
-    public Statement peek() {
-        Statement e = stack.peek();
-        if (e == null) throw new ExecutionStackException("Execution stack is empty!");
-        return e;
+    public Statement peek() throws AdtException {
+        return stack.peek();
     }
 
     @Override
@@ -48,10 +40,6 @@ public class DequeExecutionStack implements ExecutionStack {
 
     @Override
     public String toString() {
-        List<Statement> snapshot = new ArrayList<>();
-        for (Statement statement : stack) {
-            snapshot.add(statement);
-        }
-        return snapshot.toString();
+        return stack.toString();
     }
 }
