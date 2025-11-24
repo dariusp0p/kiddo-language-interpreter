@@ -18,14 +18,14 @@ public record OpenReadFile(Expression expression) implements Statement {
     public ProgramState execute(ProgramState programState) {
         if (programState == null) throw new KiddoException("openRFile: ProgramState cannot be null!");
 
-        Value value = expression.evaluate(programState.symbolTable());
+        Value value = expression.evaluate(programState.symbolTable(), programState.heapTable());
 
         if (!(value instanceof StringValue strVal)) throw new KiddoException("openRFile: expression must evaluate to a string!");
 
         FileTable fileTable = programState.fileTable();
         if (fileTable.isDefined(strVal)) throw new KiddoException("openRFile: file already opened: " + strVal);
 
-        String path = strVal.getValue();
+        String path = strVal.value();
         try {
             BufferedReader br = Files.newBufferedReader(Path.of(path));
             fileTable.define(strVal, br);

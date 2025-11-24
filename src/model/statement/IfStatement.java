@@ -10,9 +10,9 @@ public record IfStatement (Expression condition, Statement thenBranch, Statement
 
     @Override
     public ProgramState execute(ProgramState programState) {
-        Value result = condition.evaluate(programState.symbolTable());
+        Value result = condition.evaluate(programState.symbolTable(), programState.heapTable());
         if (result instanceof BooleanValue booleanValue) {
-            if (booleanValue.getValue()) {
+            if (booleanValue.value()) {
                 programState.executionStack().push(thenBranch);
             } else {
                 programState.executionStack().push(elseBranch);

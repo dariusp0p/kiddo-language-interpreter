@@ -8,7 +8,7 @@ public record PrintStatement(Expression expression) implements Statement {
 
     @Override
     public ProgramState execute(ProgramState programState) {
-        Value value = expression.evaluate(programState.symbolTable());
+        Value value = expression.evaluate(programState.symbolTable(),  programState.heapTable());
         programState.output().add(value);
         return programState;
     }

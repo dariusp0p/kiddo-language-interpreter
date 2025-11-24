@@ -12,8 +12,14 @@ public record AssignmentStatement(Expression expression, String variableName) im
     public ProgramState execute(ProgramState programState) {
         SymbolTable symbolTable = programState.symbolTable();
         if (!symbolTable.isDefined(variableName)) throw new StatementException("Variable not defined!");
-        Value value = expression.evaluate(symbolTable);
-        if (!value.getType().equals(symbolTable.getType(variableName))) throw new StatementException("Type mismatch!");
+
+        Value value = expression.evaluate(symbolTable, programState.heapTable());
+        var declaredType = symbolTable.getType(variableName);
+
+        if (!value.getType().equals(declaredType))
+            throw new StatementException("Type mismatch: variable `" + variableName + "` has type "
+                    + declaredType + " but expression evaluated to " + value.getType());
+
         symbolTable.update(variableName, value);
         return programState;
     }

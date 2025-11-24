@@ -1,12 +1,13 @@
 package model.expression;
 
+import model.state.HeapTable;
 import model.state.SymbolTable;
 import model.value.Value;
 
 public record ConstantExpression(Value value) implements Expression {
 
     @Override
-    public Value evaluate(SymbolTable symbolTable) { return value; }
+    public Value evaluate(SymbolTable symbolTable, HeapTable heapTable) { return value; }
 
     @Override
     public String toString() { return value.toString(); }

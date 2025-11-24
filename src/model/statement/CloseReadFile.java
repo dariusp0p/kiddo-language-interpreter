@@ -15,7 +15,7 @@ public record CloseReadFile(Expression expression) implements Statement {
     public ProgramState execute(ProgramState programState) {
         if (programState == null) throw new KiddoException("closeRFile: ProgramState cannot be null!");
 
-        Value value = expression.evaluate(programState.symbolTable());
+        Value value = expression.evaluate(programState.symbolTable(),  programState.heapTable());
         if (!(value instanceof StringValue strVal)) {
             throw new KiddoException("closeRFile: expression must evaluate to a string!");
         }
@@ -29,7 +29,7 @@ public record CloseReadFile(Expression expression) implements Statement {
         try {
             br.close();
         } catch (IOException ioe) {
-            throw new KiddoException("closeRFile: failed to close \"" + strVal.getValue() + "\": " + ioe.getMessage());
+            throw new KiddoException("closeRFile: failed to close \"" + strVal.value() + "\": " + ioe.getMessage());
         }
 
         fileTable.remove(strVal);
