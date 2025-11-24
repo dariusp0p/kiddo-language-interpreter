@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TextMenu {
-    private Map<String, Command> commands;
+    private final Map<String, Command> commands;
 
     public TextMenu() {
         commands = new HashMap<>();
@@ -20,9 +20,11 @@ public class TextMenu {
             String line = String.format("%4s : %s", com.getKey(), com.getDescription());
             System.out.println(line);
         }
+        System.out.println();
     }
 
     public void show() {
+        System.out.println("=== Welcome to Kiddo Language Interpreter ===\n");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             printMenu();
@@ -33,6 +35,7 @@ public class TextMenu {
                 System.out.println("Invalid Option");
                 continue;
             }
+            System.out.println();
             com.execute();
         }
     }
