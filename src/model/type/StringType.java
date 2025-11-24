@@ -1,14 +1,9 @@
 package model.type;
 
-import model.value.StringValue;
 import model.value.Value;
+import model.value.StringValue;
 
 public class StringType implements Type {
-    @Override
-    public boolean isInstance(Object another) {
-        return another instanceof StringValue;
-    }
-
     @Override
     public Value getDefaultValue() {
         return new StringValue("");
@@ -26,6 +21,6 @@ public class StringType implements Type {
 
     @Override
     public int hashCode() {
-        return String.class.hashCode();
+        return StringType.class.hashCode();
     }
 }

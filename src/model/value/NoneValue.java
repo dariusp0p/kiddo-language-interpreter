@@ -5,6 +5,7 @@ import model.type.NoneType;
 
 public final class NoneValue implements Value {
     public static final NoneValue INSTANCE = new NoneValue();
+
     private NoneValue() {}
 
     public Object getValue() { return null; }
