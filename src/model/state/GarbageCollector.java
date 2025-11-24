@@ -1,6 +1,5 @@
 package model.state;
 
-
 import model.value.ReferenceValue;
 import model.value.Value;
 
@@ -8,37 +7,50 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GarbageCollector {
-
-    public static Map<Integer, Value> safeGarbageCollector(List<Integer> symTableAddr, Map<Integer, Value> heap) {
-        List<Integer> reachableAddresses = getReachableAddresses(symTableAddr, heap);
+    /**
+     * Performs safe garbage collection: returns a new heap containing only reachable addresses.
+     */
+    public static Map<Integer, Value> safeGarbageCollector(Set<Integer> roots, Map<Integer, Value> heap) {
+        Set<Integer> reachable = getReachableAddresses(roots, heap);
         return heap.entrySet().stream()
-                .filter(e -> reachableAddresses.contains(e.getKey()))
+                .filter(entry -> reachable.contains(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private static List<Integer> getReachableAddresses(List<Integer> symTableAddr, Map<Integer, Value> heap) {
-        Set<Integer> addresses = new HashSet<>(symTableAddr);
+    /**
+     * Computes transitive closure of all addresses reachable from the root set.
+     */
+    private static Set<Integer> getReachableAddresses(Set<Integer> roots, Map<Integer, Value> heap) {
+        Set<Integer> reachable = new HashSet<>(roots);
         boolean changed;
 
         do {
             changed = false;
-            Set<Integer> newAddresses = heap.entrySet().stream()
-                    .filter(e -> addresses.contains(e.getKey()))
+            Set<Integer> newlyFound = heap.entrySet().stream()
+                    .filter(entry -> reachable.contains(entry.getKey()))
                     .map(Map.Entry::getValue)
                     .filter(ReferenceValue.class::isInstance)
-                    .map(v -> ((ReferenceValue) v).address())
+                    .map(value -> ((ReferenceValue) value).address())
+                    .filter(addr -> !reachable.contains(addr))
                     .collect(Collectors.toSet());
 
-            changed = addresses.addAll(newAddresses);
+            if (!newlyFound.isEmpty()) {
+                reachable.addAll(newlyFound);
+                changed = true;
+            }
+
         } while (changed);
 
-        return new ArrayList<>(addresses);
+        return reachable;
     }
 
-    public static List<Integer> getAddrFromSymTable(Collection<Value> symTableValues) {
+    /**
+     * Extracts all addresses referenced in the SymbolTable.
+     */
+    public static Set<Integer> getAddrFromSymTable(Collection<Value> symTableValues) {
         return symTableValues.stream()
                 .filter(ReferenceValue.class::isInstance)
                 .map(v -> ((ReferenceValue) v).address())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }
