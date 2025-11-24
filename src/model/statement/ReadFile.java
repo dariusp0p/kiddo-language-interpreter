@@ -2,6 +2,7 @@ package model.statement;
 
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.type.IntegerType;
 import model.type.Type;
 import model.value.IntegerValue;
 import model.value.StringValue;
@@ -10,6 +11,7 @@ import utilities.KiddoException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public record ReadFile(Expression expression, String variableName) implements Statement {
 
@@ -20,9 +22,9 @@ public record ReadFile(Expression expression, String variableName) implements St
 
         var symTable = programState.symbolTable();
         if (!symTable.isDefined(variableName)) throw new KiddoException("readFile: variable \"" + variableName + "\" is not defined!");
-        if (symTable.getType(variableName) != Type.INTEGER) throw new KiddoException("readFile: variable \"" + variableName + "\" must be of type int!");
+        if (!Objects.equals(symTable.getType(variableName), new IntegerType())) throw new KiddoException("readFile: variable \"" + variableName + "\" must be of type int!");
 
-        Value value = expression.evaluate(symTable);
+        Value value = expression.evaluate(symTable,  programState.heapTable());
         if (!(value instanceof StringValue strVal)) throw new KiddoException("readFile: expression must evaluate to a string!");
         BufferedReader br = programState.fileTable().lookup(strVal);
 
@@ -30,7 +32,7 @@ public record ReadFile(Expression expression, String variableName) implements St
         try {
             line = br.readLine();
         } catch (IOException ioe) {
-            throw new KiddoException("readFile: failed to read from \"" + strVal.getValue() + "\": " + ioe.getMessage());
+            throw new KiddoException("readFile: failed to read from \"" + strVal.value() + "\": " + ioe.getMessage());
         }
 
         int number;

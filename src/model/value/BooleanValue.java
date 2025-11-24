@@ -1,16 +1,17 @@
 package model.value;
 
 import model.type.Type;
+import model.type.BooleanType;
 
-public class BooleanValue implements Value {
-    private final boolean value;
-    public BooleanValue(boolean value) { this.value = value; }
-
-    public boolean getValue() { return value; }
+public record BooleanValue(boolean value) implements Value {
 
     @Override
-    public Type getType() { return Type.BOOLEAN; }
+    public Type getType() {
+        return new BooleanType();
+    }
 
     @Override
-    public String toString() { return Boolean.toString(value); }
+    public String toString() {
+        return Boolean.toString(value);
+    }
 }

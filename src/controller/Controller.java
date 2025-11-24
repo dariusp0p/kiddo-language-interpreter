@@ -1,6 +1,9 @@
 package controller;
 
+import model.adt.KiddoDictionary;
+import model.adt.KiddoHashMapDictionary;
 import model.state.ExecutionStack;
+import model.state.GarbageCollector;
 import model.state.ProgramState;
 import model.statement.Statement;
 import repository.Repository;
@@ -23,6 +26,12 @@ public class Controller {
         while (!programState.executionStack().isEmpty()) {
             oneStep(programState);
             repo.logProgramStateExecution();
+            programState.heapTable().setContent(new KiddoHashMapDictionary<>(
+                    GarbageCollector.safeGarbageCollector(
+                        GarbageCollector.getAddrFromSymTable(programState.symbolTable().getContent().values()),
+                        programState.heapTable().getContent()
+                    )
+            ));
         }
     }
 

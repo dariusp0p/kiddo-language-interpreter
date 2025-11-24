@@ -7,7 +7,8 @@ import model.value.Value;
 import utilities.SymbolTableException;
 
 public class MapSymbolTable implements SymbolTable {
-    private final KiddoDictionary<String, Value> map = new KiddoHashMapDictionary<>();
+    private final KiddoDictionary<String, Value> map =
+            new KiddoHashMapDictionary<String, Value>(new java.util.HashMap<String, Value>());
 
     private void validateVariableName(String variableName) {
         if (variableName == null || variableName.isBlank()) {
@@ -57,6 +58,11 @@ public class MapSymbolTable implements SymbolTable {
         } else {
             define(variableName, value);
         }
+    }
+
+    @Override
+    public KiddoDictionary<String, Value> getContent() {
+        return map;
     }
 
     @Override

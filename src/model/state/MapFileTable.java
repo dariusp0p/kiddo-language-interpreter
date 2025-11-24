@@ -8,7 +8,8 @@ import utilities.KiddoException;
 import java.io.BufferedReader;
 
 public class MapFileTable implements FileTable {
-    private final KiddoDictionary<StringValue, BufferedReader> table = new KiddoHashMapDictionary<>();
+    private final KiddoDictionary<StringValue, BufferedReader> table =
+            new KiddoHashMapDictionary<StringValue, BufferedReader>(new java.util.HashMap<StringValue, BufferedReader>());
 
     @Override
     public void define(StringValue filename, BufferedReader reader) {
