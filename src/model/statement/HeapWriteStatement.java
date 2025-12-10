@@ -7,6 +7,8 @@ import model.expression.Expression;
 import model.state.HeapTable;
 import model.state.ProgramState;
 import model.state.SymbolTable;
+import model.type.ReferenceType;
+import model.type.Type;
 import model.value.ReferenceValue;
 import model.value.Value;
 
@@ -68,6 +70,33 @@ public record HeapWriteStatement(String varName, Expression expression) implemen
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        Type typeVar;
+        try {
+            typeVar = typeEnv.getType(varName);
+        } catch (AdtException e) {
+            throw new StatementException("wH: variable \"" + varName + "\" is not defined", e);
+        }
+
+        if (!(typeVar instanceof ReferenceType refType)) {
+            throw new StatementException("wH: variable \"" + varName + "\" is not a reference type");
+        }
+
+        Type typeExp;
+        try {
+            typeExp = expression.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("wH: failed to evaluate expression " + expression, e);
+        }
+
+        if (!refType.getInner().equals(typeExp)) {
+            throw new StatementException("wH: heap write type mismatch");
+        }
+
+        return typeEnv;
     }
 
     @Override

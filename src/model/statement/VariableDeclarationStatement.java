@@ -22,6 +22,16 @@ public record VariableDeclarationStatement(Type type, String variableName) imple
     }
 
     @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        try {
+            typeEnv.define(variableName, type.getDefaultValue());
+        } catch (AdtException e) {
+            throw new StatementException("VarDecl: failed to add variable to type environment", e);
+        }
+        return typeEnv;
+    }
+
+    @Override
     public String toString() {
         return type + " " + variableName;
     }

@@ -4,8 +4,10 @@ import exceptions.AdtException;
 import exceptions.ExpressionException;
 import model.state.HeapTable;
 import model.state.SymbolTable;
+import model.type.ReferenceType;
 import model.value.ReferenceValue;
 import model.value.Value;
+import model.type.Type;
 
 public record ReadHeapExpression(Expression expression) implements Expression {
     @Override
@@ -31,6 +33,17 @@ public record ReadHeapExpression(Expression expression) implements Expression {
 
         } catch (AdtException e) {
             throw new ExpressionException("Heap access failed at address " + address, e);
+        }
+    }
+
+    @Override
+    public Type typecheck(SymbolTable typeEnv) throws ExpressionException {
+        Type typ = expression.typecheck(typeEnv);
+
+        if (typ instanceof ReferenceType refType) {
+            return refType.getInner();
+        } else {
+            throw new ExpressionException("The rH argument is not a Reference Type");
         }
     }
 

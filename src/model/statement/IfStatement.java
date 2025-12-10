@@ -5,8 +5,11 @@ import exceptions.ExpressionException;
 import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTable;
+import model.type.BooleanType;
 import model.value.BooleanValue;
 import model.value.Value;
+import model.type.Type;
 
 public record IfStatement(Expression condition, Statement thenBranch, Statement elseBranch)
         implements Statement {
@@ -33,6 +36,30 @@ public record IfStatement(Expression condition, Statement thenBranch, Statement 
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+
+        Type typeExp = null;
+        try {
+            typeExp = condition.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("Failed to evaluate if expression: ", e);
+        }
+
+        if (!typeExp.equals(new BooleanType())) {
+            throw new StatementException("The condition of IF has not the type bool");
+        }
+
+        try {
+            thenBranch.typecheck(typeEnv.deepCopy());
+            elseBranch.typecheck(typeEnv.deepCopy());
+        } catch (AdtException e) {
+            throw new StatementException("Error: ", e);
+        }
+
+        return typeEnv;
     }
 
     @Override

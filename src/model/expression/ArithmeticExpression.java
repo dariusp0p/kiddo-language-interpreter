@@ -3,8 +3,10 @@ package model.expression;
 import exceptions.ExpressionException;
 import model.state.HeapTable;
 import model.state.SymbolTable;
+import model.type.IntegerType;
 import model.value.IntegerValue;
 import model.value.Value;
+import model.type.Type;
 
 public record ArithmeticExpression(Expression left, Expression right, String operator)
         implements Expression {
@@ -49,5 +51,21 @@ public record ArithmeticExpression(Expression left, Expression right, String ope
             case "/" -> new IntegerValue(value / value1);
             default  -> throw new ExpressionException("Unknown arithmetic operator: " + operator);
         };
+    }
+
+    @Override
+    public Type typecheck(SymbolTable typeEnv) throws ExpressionException {
+        Type typ1 = left.typecheck(typeEnv);
+        Type typ2 = right.typecheck(typeEnv);
+
+        if (typ1.equals(new IntegerType())) {
+            if (typ2.equals(new IntegerType())) {
+                return new IntegerType();
+            } else {
+                throw new ExpressionException("Second operand is not an integer in arithmetic expression");
+            }
+        } else {
+            throw new ExpressionException("First operand is not an integer in arithmetic expression");
+        }
     }
 }

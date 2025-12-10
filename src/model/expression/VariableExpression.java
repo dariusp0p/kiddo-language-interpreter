@@ -5,6 +5,7 @@ import exceptions.ExpressionException;
 import model.state.HeapTable;
 import model.state.SymbolTable;
 import model.value.Value;
+import model.type.Type;
 
 public record VariableExpression(String variableName) implements Expression {
     @Override
@@ -13,6 +14,15 @@ public record VariableExpression(String variableName) implements Expression {
             return symbolTable.lookup(variableName);
         } catch (AdtException e) {
             throw new ExpressionException("Variable \"" + variableName + "\" is not defined", e);
+        }
+    }
+
+    @Override
+    public Type typecheck(SymbolTable typeEnv) throws ExpressionException {
+        try {
+            return typeEnv.lookup(variableName).getType();
+        } catch (AdtException e) {
+            throw new ExpressionException("Variable \"" + variableName + "\" is not defined in type environment", e);
         }
     }
 

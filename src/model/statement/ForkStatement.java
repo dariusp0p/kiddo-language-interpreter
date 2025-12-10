@@ -18,4 +18,14 @@ public record ForkStatement (Statement statement) implements Statement {
                 programState.heapTable()
         );
     }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        try {
+            statement.typecheck(typeEnv.deepCopy());
+        } catch (AdtException e) {
+            throw new StatementException(e.getMessage(), e);
+        }
+        return typeEnv;
+    }
 }

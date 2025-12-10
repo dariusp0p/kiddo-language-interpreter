@@ -179,6 +179,31 @@ public class Main {
         prg14.executionStack().push(ex14);
         Controller ctr14 = new Controller(new MainRepository(prg14, "logs/log14.txt"));
 
+        // Example 15 - Type error: assigning int to bool
+        Statement ex15 = ProgramExamples.example15();
+        ProgramState prg15 = new ProgramState(
+                new DequeExecutionStack(),
+                new MapSymbolTable(),
+                new ListOutput(),
+                new MapFileTable(),
+                new MapHeapTable()
+        );
+        prg15.executionStack().push(ex15);
+        Controller ctr15 = new Controller(new MainRepository(prg15, "logs/log15.txt"));
+
+        // Example 16 - Type error: if condition not boolean
+        Statement ex16 = ProgramExamples.example16();
+        ProgramState prg16 = new ProgramState(
+                new DequeExecutionStack(),
+                new MapSymbolTable(),
+                new ListOutput(),
+                new MapFileTable(),
+                new MapHeapTable()
+        );
+        prg16.executionStack().push(ex16);
+        Controller ctr16 = new Controller(new MainRepository(prg16, "logs/log16.txt"));
+
+
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));
 
@@ -196,6 +221,8 @@ public class Main {
         menu.addCommand(new RunExampleCommand("12", "int v; Ref int a; v = 10; new(a,22); fork( wH(a,30); v = 32; print(v); print(rH(a)) ); print(v); print(rH(a));", ctr12));
         menu.addCommand(new RunExampleCommand("13", "int v; v = 1; fork( v = v + 10; print(v) ); print(v);", ctr13));
         menu.addCommand(new RunExampleCommand("14", "Ref int a; new(a,0); fork( wH(a, rH(a) + 1); print(rH(a)) ); fork( wH(a, rH(a) + 1); print(rH(a)) ); print(rH(a));", ctr14));
+        menu.addCommand(new RunExampleCommand("15", "TYPE ERROR: bool a; a = 5;", ctr15));
+        menu.addCommand(new RunExampleCommand("16", "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);", ctr16));
 
         menu.show();
     }

@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import exceptions.KiddoException;
+import model.statement.Statement;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -18,12 +19,18 @@ public class RunExampleCommand extends Command {
     public void execute() {
         long startNs = System.nanoTime();
         try {
+            Statement program = controller.getCurrentProgramState().executionStack().pop();
+            controller.getCurrentProgramState().executionStack().push(program);
+
+            controller.typecheck(program);
+            System.out.println("Type check passed!");
+
             controller.allSteps();
             System.out.println("Program execution completed!");
             System.out.println("Output: " + controller.getCurrentProgramState().output());
 
         } catch (KiddoException ke) {
-            System.out.println("Runtime error: " + ke.getMessage());
+            System.out.println("Error: " + ke.getMessage());
         } catch (Exception ex) {
             System.out.println("Error during execution: " + ex.getMessage());
             ex.printStackTrace(System.out);
