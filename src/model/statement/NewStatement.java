@@ -10,6 +10,7 @@ import model.state.SymbolTable;
 import model.type.ReferenceType;
 import model.value.ReferenceValue;
 import model.value.Value;
+import model.type.Type;
 
 public record NewStatement(String varName, Expression expression) implements Statement {
 
@@ -67,6 +68,30 @@ public record NewStatement(String varName, Expression expression) implements Sta
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        Type typeVar;
+        try {
+            typeVar = typeEnv.getType(varName);
+        } catch (AdtException e) {
+            throw new StatementException("NEW: variable \"" + varName + "\" is not defined", e);
+        }
+
+        Type typeExp;
+
+        try {
+            typeExp = expression.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("Failed to evaluate expression: ", e);
+        }
+
+        if (!typeVar.equals(new ReferenceType(typeExp))) {
+            throw new StatementException("NEW stmt: right hand side and left hand side have different types");
+        }
+
+        return typeEnv;
     }
 
     @Override

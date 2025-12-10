@@ -5,6 +5,7 @@ import exceptions.ExpressionException;
 import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTable;
 import model.value.Value;
 
 public record PrintStatement(Expression expression) implements Statement {
@@ -26,6 +27,16 @@ public record PrintStatement(Expression expression) implements Statement {
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        try {
+            expression.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("Type check failed for print expression: " + expression, e);
+        }
+        return typeEnv;
     }
 
     @Override

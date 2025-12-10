@@ -4,7 +4,9 @@ import exceptions.KiddoException;
 import exceptions.RepositoryException;
 import model.adt.KiddoHashMapDictionary;
 import model.state.GarbageCollector;
+import model.state.MapSymbolTable;
 import model.state.ProgramState;
+import model.statement.Statement;
 import model.value.Value;
 import repository.Repository;
 
@@ -111,5 +113,13 @@ public class Controller {
             throw new KiddoException("No ProgramState in repository");
         }
         return programStates.getFirst();
+    }
+
+    public void typecheck(Statement program) throws KiddoException {
+        try {
+            program.typecheck(new MapSymbolTable());
+        } catch (Exception e) {
+            throw new KiddoException("Type check failed: " + e.getMessage(), e);
+        }
     }
 }

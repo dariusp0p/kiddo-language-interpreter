@@ -6,8 +6,11 @@ import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.FileTable;
 import model.state.ProgramState;
+import model.state.SymbolTable;
+import model.type.StringType;
 import model.value.StringValue;
 import model.value.Value;
+import model.type.Type;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,5 +55,21 @@ public record OpenFileStatement(Expression expression) implements Statement {
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        Type typeExp;
+        try {
+            typeExp = expression.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("openRFile: failed to evaluate expression: " + expression, e);
+        }
+
+        if (!typeExp.equals(new StringType())) {
+            throw new StatementException("openRFile: expression is not a string type");
+        }
+
+        return typeEnv;
     }
 }

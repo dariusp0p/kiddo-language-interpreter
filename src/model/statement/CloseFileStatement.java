@@ -5,8 +5,11 @@ import exceptions.ExpressionException;
 import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTable;
+import model.type.StringType;
 import model.value.StringValue;
 import model.value.Value;
+import model.type.Type;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,6 +60,22 @@ public record CloseFileStatement(Expression expression) implements Statement {
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        Type typeExp;
+        try {
+            typeExp = expression.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("closeRFile: failed typechecking expression: " + expression, e);
+        }
+
+        if (!typeExp.equals(new StringType())) {
+            throw new StatementException("closeRFile: expression is not a string type");
+        }
+
+        return typeEnv;
     }
 
     @Override

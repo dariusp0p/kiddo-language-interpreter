@@ -550,4 +550,30 @@ public class ProgramExamples {
                 )
         );
     }
+
+    public static Statement example15() {
+        // Type error: assigning int to bool variable
+        // bool a; a = 5;
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new BooleanType(), "a"),
+                new AssignmentStatement(new ConstantExpression(new IntegerValue(5)), "a")
+        );
+    }
+
+    public static Statement example16() {
+        // Type error: if condition is not boolean
+        // int a; a = 5; if a then print(1) else print(2);
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new IntegerType(), "a"),
+                new CompoundStatement(
+                        new AssignmentStatement(new ConstantExpression(new IntegerValue(5)), "a"),
+                        new IfStatement(
+                                new VariableExpression("a"),
+                                new PrintStatement(new ConstantExpression(new IntegerValue(1))),
+                                new PrintStatement(new ConstantExpression(new IntegerValue(2)))
+                        )
+                )
+        );
+    }
+
 }

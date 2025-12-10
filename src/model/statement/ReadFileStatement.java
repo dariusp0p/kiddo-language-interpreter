@@ -5,10 +5,13 @@ import exceptions.ExpressionException;
 import exceptions.StatementException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTable;
 import model.type.IntegerType;
+import model.type.StringType;
 import model.value.IntegerValue;
 import model.value.StringValue;
 import model.value.Value;
+import model.type.Type;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -79,6 +82,33 @@ public record ReadFileStatement(Expression expression, String variableName) impl
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        Type typeExp;
+        try {
+            typeExp = expression.typecheck(typeEnv);
+        } catch (ExpressionException e) {
+            throw new StatementException("readFile: failed typechecking expression: " + expression, e);
+        }
+
+        if (!typeExp.equals(new StringType())) {
+            throw new StatementException("readFile: file expression is not a string type");
+        }
+
+        Type typeVar;
+        try {
+            typeVar = typeEnv.getType(variableName);
+        } catch (AdtException e) {
+            throw new StatementException("readFile: variable \"" + variableName + "\" is not defined", e);
+        }
+
+        if (!typeVar.equals(new IntegerType())) {
+            throw new StatementException("readFile: variable \"" + variableName + "\" is not an integer type");
+        }
+
+        return typeEnv;
     }
 
     @Override

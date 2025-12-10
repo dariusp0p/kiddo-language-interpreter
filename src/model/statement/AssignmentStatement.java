@@ -24,7 +24,7 @@ public record AssignmentStatement(Expression expression, String variableName) im
         try {
             value = expression.evaluate(symbolTable, programState.heapTable());
         } catch (ExpressionException e) {
-            throw new StatementException("Failed to evaluate assignment expression for \"" + variableName + "\": " + expression, e);
+            throw new StatementException("Failed to evaluate assignment expression for" + variableName + ": " + expression, e);
         }
 
         Type declaredType;
@@ -47,6 +47,27 @@ public record AssignmentStatement(Expression expression, String variableName) im
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        Type typeVar;
+        try {
+            typeVar = typeEnv.getType(variableName);
+        } catch (AdtException e) {
+            throw new StatementException("Assignment: variable \"" + variableName + "\" is not defined", e);
+        }
+
+        try {
+            Type typeExp = expression.typecheck(typeEnv);
+            if (!typeVar.equals(typeExp)) {
+                throw new StatementException("Assignment: right hand side and left hand side have different types");
+            }
+        } catch (ExpressionException e) {
+            throw new StatementException("Failed to evaluate assignment expression for " + variableName, e);
+        }
+
+        return typeEnv;
     }
 
     @Override

@@ -3,9 +3,12 @@ package model.expression;
 import exceptions.ExpressionException;
 import model.state.HeapTable;
 import model.state.SymbolTable;
+import model.type.BooleanType;
+import model.type.IntegerType;
 import model.value.BooleanValue;
 import model.value.IntegerValue;
 import model.value.Value;
+import model.type.Type;
 
 public record RelationalExpression(Expression left, Expression right, String operator)
         implements Expression {
@@ -50,5 +53,21 @@ public record RelationalExpression(Expression left, Expression right, String ope
             case ">=" -> new BooleanValue(value >= value1);
             default -> throw new ExpressionException("Unknown relational operator: " + operator);
         };
+    }
+
+    @Override
+    public Type typecheck(SymbolTable typeEnv) throws ExpressionException {
+        Type typ1 = left.typecheck(typeEnv);
+        Type typ2 = right.typecheck(typeEnv);
+
+        if (typ1.equals(new IntegerType())) {
+            if (typ2.equals(new IntegerType())) {
+                return new BooleanType();
+            } else {
+                throw new ExpressionException("Second operand is not an integer in relational expression");
+            }
+        } else {
+            throw new ExpressionException("First operand is not an integer in relational expression");
+        }
     }
 }

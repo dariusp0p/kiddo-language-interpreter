@@ -4,6 +4,7 @@ import exceptions.AdtException;
 import exceptions.StatementException;
 import model.state.ExecutionStack;
 import model.state.ProgramState;
+import model.state.SymbolTable;
 
 public record CompoundStatement(Statement first, Statement second) implements Statement {
     @Override
@@ -17,6 +18,12 @@ public record CompoundStatement(Statement first, Statement second) implements St
             throw new StatementException("Failed to push statements onto execution executionStack", e);
         }
         return null;
+    }
+
+    // TODO - understand
+    @Override
+    public SymbolTable typecheck(SymbolTable typeEnv) throws StatementException {
+        return second.typecheck(first.typecheck(typeEnv));
     }
 
     @Override
