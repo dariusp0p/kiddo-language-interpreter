@@ -5,6 +5,8 @@ import model.adt.KiddoStack;
 import model.adt.KiddoArrayStack;
 import model.statement.Statement;
 
+import java.util.List;
+
 public class DequeExecutionStack implements ExecutionStack {
     private final KiddoStack<Statement> stack = new KiddoArrayStack<>();
 
@@ -36,6 +38,11 @@ public class DequeExecutionStack implements ExecutionStack {
     @Override
     public void clear() {
         stack.clear();
+    }
+
+    @Override
+    public List<Statement> getAll() throws AdtException {
+        return stack.asList();
     }
 
     @Override

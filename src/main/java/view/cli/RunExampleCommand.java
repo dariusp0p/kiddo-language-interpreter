@@ -1,11 +1,8 @@
-package view;
+package view.cli;
 
 import controller.Controller;
 import exceptions.KiddoException;
 import model.statement.Statement;
-
-import java.time.Duration;
-import java.time.Instant;
 
 public class RunExampleCommand extends Command {
     private final Controller controller;

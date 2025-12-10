@@ -12,6 +12,10 @@ public record ProgramState
         return ++lastId;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public ProgramState(ExecutionStack executionStack,
                         SymbolTable symbolTable,
                         Output output,

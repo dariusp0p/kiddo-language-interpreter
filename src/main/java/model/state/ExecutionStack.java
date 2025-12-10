@@ -3,6 +3,8 @@ package model.state;
 import exceptions.AdtException;
 import model.statement.Statement;
 
+import java.util.List;
+
 public interface ExecutionStack {
     void push(Statement element) throws AdtException;
     Statement pop() throws AdtException;
@@ -10,4 +12,5 @@ public interface ExecutionStack {
     boolean isEmpty();
     int size();
     void clear();
+    List<Statement> getAll() throws AdtException;
 }

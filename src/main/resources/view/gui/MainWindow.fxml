@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.gui.MainWindowController" prefWidth="1200" prefHeight="800">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f4f4f4;">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            <Button fx:id="backButton" text="← Back to Selector" onAction="#handleBackToSelector"
+                    style="-fx-font-size: 12px;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Number of Program States:"/>
+            <TextField fx:id="programCountField" editable="false" prefWidth="60"/>
+            <Button fx:id="runOneStepButton" text="Run One Step" onAction="#handleRunOneStep"
+                    style="-fx-font-size: 13px;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.5">
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <Label text="Heap Table" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <TableView fx:id="heapTableView" VBox.vgrow="ALWAYS" prefHeight="250">
+                    <columns>
+                        <TableColumn fx:id="heapAddressColumn" text="Address" prefWidth="100"/>
+                        <TableColumn fx:id="heapValueColumn" text="Value" prefWidth="200"/>
+                    </columns>
+                </TableView>
+
+                <Label text="Output" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <ListView fx:id="outputListView" VBox.vgrow="ALWAYS" prefHeight="150"/>
+
+                <Label text="File Table" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <ListView fx:id="fileTableListView" VBox.vgrow="ALWAYS" prefHeight="150"/>
+            </VBox>
+
+            <VBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <Label text="Program State IDs" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <ListView fx:id="programStateListView" minHeight="120" prefHeight="120"/>
+
+                <Label text="Symbol Table" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <TableView fx:id="symbolTableView" VBox.vgrow="ALWAYS" prefHeight="250">
+                    <columns>
+                        <TableColumn fx:id="variableNameColumn" text="Variable Name" prefWidth="150"/>
+                        <TableColumn fx:id="variableValueColumn" text="Value" prefWidth="150"/>
+                    </columns>
+                </TableView>
+
+                <Label text="Execution Stack" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <ListView fx:id="executionStackListView" VBox.vgrow="ALWAYS" prefHeight="250"/>
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>
