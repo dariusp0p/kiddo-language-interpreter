@@ -4,9 +4,9 @@ import exceptions.AdtException;
 import model.state.*;
 import model.statement.Statement;
 import repository.MainRepository;
-import view.ExitCommand;
-import view.RunExampleCommand;
-import view.TextMenu;
+import view.cli.ExitCommand;
+import view.cli.RunExampleCommand;
+import view.cli.TextMenu;
 
 public class Main {
     public static void main(String[] args) throws AdtException {

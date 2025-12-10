@@ -1,4 +1,4 @@
-package view;
+package view.cli;
 
 import java.util.HashMap;
 import java.util.Map;

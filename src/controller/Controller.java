@@ -23,9 +23,25 @@ import java.util.stream.Collectors;
 public class Controller {
     private final Repository repo;
     private ExecutorService executor;
+    private boolean autoCreatedExecutor = false;
 
     public Controller(Repository repo) {
         this.repo = repo;
+    }
+
+    public void setConcurrentExecutor(ExecutorService executor) {
+        if (this.executor != null && autoCreatedExecutor) {
+            this.executor.shutdownNow();
+        }
+        this.executor = executor;
+        this.autoCreatedExecutor = false;
+    }
+
+    private void ensureExecutorExists() {
+        if (executor == null || executor.isShutdown()) {
+            executor = Executors.newFixedThreadPool(2);
+            autoCreatedExecutor = true;
+        }
     }
 
     public List<ProgramState> removeCompletedPrograms(List<ProgramState> programStates) throws KiddoException {
@@ -34,7 +50,9 @@ public class Controller {
                 .collect(Collectors.toList());
     }
 
-    private void oneStepForAllPrograms(List<ProgramState> programStates) throws KiddoException {
+    public void oneStepForAllPrograms(List<ProgramState> programStates) throws KiddoException {
+        ensureExecutorExists();
+
         List<Callable<ProgramState>> callList = programStates.stream()
                 .map((ProgramState p) -> (Callable<ProgramState>) p::oneStep)
                 .collect(Collectors.toList());
@@ -92,7 +110,7 @@ public class Controller {
     }
 
     public void allSteps() throws KiddoException {
-        executor = Executors.newFixedThreadPool(2);
+        ensureExecutorExists();
         List<ProgramState> programStates = removeCompletedPrograms(getProgramListFromRepo());
 
         while (!programStates.isEmpty()) {
@@ -100,11 +118,22 @@ public class Controller {
             programStates = removeCompletedPrograms(getProgramListFromRepo());
         }
 
-        executor.shutdownNow();
+        if (autoCreatedExecutor && executor != null) {
+            executor.shutdownNow();
+        }
     }
 
-    private List<ProgramState> getProgramListFromRepo() {
+    public void shutdown() {
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdownNow();
+        }
+    }
+
+    public List<ProgramState> getProgramListFromRepo() {
         return repo.getProgramStates();
+    }
+    public void setProgramListFromRepo(List<ProgramState> programStates) {
+        repo.setProgramStates(programStates);
     }
 
     public ProgramState getCurrentProgramState() throws KiddoException {

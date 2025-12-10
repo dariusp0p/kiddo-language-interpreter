@@ -5,6 +5,7 @@ import exceptions.AdtException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.List;
 
 public class KiddoArrayStack<T> implements KiddoStack<T> {
     private final Deque<T> data = new ArrayDeque<>();
@@ -45,6 +46,11 @@ public class KiddoArrayStack<T> implements KiddoStack<T> {
     @Override
     public Iterator<T> iterator() {
         return data.iterator();
+    }
+
+    @Override
+    public List<T> asList() {
+        return new java.util.ArrayList<>(data);
     }
 
     @Override
