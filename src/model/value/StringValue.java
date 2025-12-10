@@ -13,4 +13,9 @@ public record StringValue(String value) implements Value {
     public String toString() {
         return value();
     }
+
+    @Override
+    public Value deepCopy() {
+        return new StringValue(value());
+    }
 }

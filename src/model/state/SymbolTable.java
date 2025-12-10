@@ -11,4 +11,5 @@ public interface SymbolTable {
     Value lookup(String variableName) throws AdtException;
     Type getType(String variableName) throws AdtException;
     KiddoDictionary<String, Value> getContent();
+    SymbolTable deepCopy() throws AdtException;
 }

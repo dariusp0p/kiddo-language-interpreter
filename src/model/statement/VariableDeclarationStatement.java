@@ -18,7 +18,7 @@ public record VariableDeclarationStatement(Type type, String variableName) imple
             throw new StatementException("Failed to declare variable \"" + variableName + "\" of type " + type, e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

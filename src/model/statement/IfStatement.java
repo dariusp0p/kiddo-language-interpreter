@@ -32,7 +32,7 @@ public record IfStatement(Expression condition, Statement thenBranch, Statement 
             throw new StatementException("Failed to push IF branch onto execution stack", e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

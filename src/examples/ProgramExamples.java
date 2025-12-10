@@ -179,10 +179,6 @@ public class ProgramExamples {
     }
 
 
-    
-    
-    
-    
     public static Statement example6() {
         // Ref int v;
         // new(v,20);
@@ -410,6 +406,144 @@ public class ProgramExamples {
                                                                 )
                                                         )
                                                 )
+                                        )
+                                )
+                        )
+                )
+        );
+    }
+
+    public static Statement example12() {
+        // int v; Ref int a; v=10; new(a,22);
+        // fork( wH(a,30); v=32; print(v); print(rH(a)) );
+        // print(v); print(rH(a));
+        //
+        // Parent and child share heap (a), but have different v after fork.
+
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new IntegerType(), "v"),
+                new CompoundStatement(
+                        new VariableDeclarationStatement(new ReferenceType(new IntegerType()), "a"),
+                        new CompoundStatement(
+                                new AssignmentStatement(
+                                        new ConstantExpression(new IntegerValue(10)),
+                                        "v"
+                                ),
+                                new CompoundStatement(
+                                        new NewStatement("a", new ConstantExpression(new IntegerValue(22))),
+                                        new CompoundStatement(
+                                                new ForkStatement(
+                                                        new CompoundStatement(
+                                                                new HeapWriteStatement("a",
+                                                                        new ConstantExpression(new IntegerValue(30))
+                                                                ),
+                                                                new CompoundStatement(
+                                                                        new AssignmentStatement(
+                                                                                new ConstantExpression(new IntegerValue(32)),
+                                                                                "v"
+                                                                        ),
+                                                                        new CompoundStatement(
+                                                                                new PrintStatement(new VariableExpression("v")),
+                                                                                new PrintStatement(new ReadHeapExpression(
+                                                                                        new VariableExpression("a")
+                                                                                ))
+                                                                        )
+                                                                )
+                                                        )
+                                                ),
+                                                new CompoundStatement(
+                                                        new PrintStatement(new VariableExpression("v")),
+                                                        new PrintStatement(new ReadHeapExpression(
+                                                                new VariableExpression("a")
+                                                        ))
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+    }
+
+    public static Statement example13() {
+        // int v; v = 1;
+        // fork( v = v + 10; print(v) );
+        // print(v);
+        //
+        // Child should print 11, parent prints 1 (order may vary).
+
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new IntegerType(), "v"),
+                new CompoundStatement(
+                        new AssignmentStatement(
+                                new ConstantExpression(new IntegerValue(1)),
+                                "v"
+                        ),
+                        new CompoundStatement(
+                                new ForkStatement(
+                                        new CompoundStatement(
+                                                new AssignmentStatement(
+                                                        new ArithmeticExpression(
+                                                                new VariableExpression("v"),
+                                                                new ConstantExpression(new IntegerValue(10)),
+                                                                "+"
+                                                        ),
+                                                        "v"
+                                                ),
+                                                new PrintStatement(new VariableExpression("v"))
+                                        )
+                                ),
+                                new PrintStatement(new VariableExpression("v"))
+                        )
+                )
+        );
+    }
+
+    public static Statement example14() {
+        // Ref int a; new(a, 0);
+        // fork( wH(a, rH(a) + 1); print(rH(a)) );
+        // fork( wH(a, rH(a) + 1); print(rH(a)) );
+        // print(rH(a));
+        //
+        // All threads share 'a' in the heap, but execution order is non-deterministic.
+
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new ReferenceType(new IntegerType()), "a"),
+                new CompoundStatement(
+                        new NewStatement("a", new ConstantExpression(new IntegerValue(0))),
+                        new CompoundStatement(
+                                new ForkStatement(
+                                        new CompoundStatement(
+                                                new HeapWriteStatement(
+                                                        "a",
+                                                        new ArithmeticExpression(
+                                                                new ReadHeapExpression(new VariableExpression("a")),
+                                                                new ConstantExpression(new IntegerValue(1)),
+                                                                "+"
+                                                        )
+                                                ),
+                                                new PrintStatement(
+                                                        new ReadHeapExpression(new VariableExpression("a"))
+                                                )
+                                        )
+                                ),
+                                new CompoundStatement(
+                                        new ForkStatement(
+                                                new CompoundStatement(
+                                                        new HeapWriteStatement(
+                                                                "a",
+                                                                new ArithmeticExpression(
+                                                                        new ReadHeapExpression(new VariableExpression("a")),
+                                                                        new ConstantExpression(new IntegerValue(1)),
+                                                                        "+"
+                                                                )
+                                                        ),
+                                                        new PrintStatement(
+                                                                new ReadHeapExpression(new VariableExpression("a"))
+                                                        )
+                                                )
+                                        ),
+                                        new PrintStatement(
+                                                new ReadHeapExpression(new VariableExpression("a"))
                                         )
                                 )
                         )

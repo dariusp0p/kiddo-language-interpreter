@@ -5,6 +5,7 @@ import model.type.Type;
 public interface Value {
     Type getType();
     String toString();
+    Value deepCopy();
 
     Value NONE = NoneValue.INSTANCE;
 }

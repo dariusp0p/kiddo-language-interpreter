@@ -67,7 +67,7 @@ public record HeapWriteStatement(String varName, Expression expression) implemen
             throw new StatementException("wH: failed to update heap at address " + address, e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

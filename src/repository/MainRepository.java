@@ -14,20 +14,12 @@ public class MainRepository implements Repository {
     private final List<ProgramState> programStates;
     private final String logFilePath;
 
-    public MainRepository(String logFilePath) {
+    public MainRepository(ProgramState initialProgram, String logFilePath) {
         this.programStates = new ArrayList<>();
+        if (initialProgram != null) {
+            this.programStates.add(initialProgram);
+        }
         this.logFilePath = logFilePath;
-    }
-
-    public MainRepository(ProgramState initialState, String logFilePath) {
-        this(logFilePath);
-        if (initialState != null) this.programStates.add(initialState);
-    }
-
-    @Override
-    public ProgramState getCurrentProgramState() throws RepositoryException {
-        if (programStates.isEmpty()) throw new RepositoryException("Repository contains no program states.");
-        return programStates.getLast();
     }
 
     @Override
@@ -35,19 +27,18 @@ public class MainRepository implements Repository {
         return programStates;
     }
 
-    public void addProgramState(ProgramState state) throws RepositoryException {
-        if (state == null) throw new RepositoryException("Cannot add null ProgramState to repository.");
-        programStates.add(state);
+    @Override
+    public void setProgramStates(List<ProgramState> programStates) {
+        this.programStates.clear();
+        this.programStates.addAll(programStates);
     }
 
     @Override
-    public void logProgramStateExecution() throws RepositoryException {
-        ProgramState state = getCurrentProgramState();
-
+    public void logProgramStateExecution(ProgramState programState) throws RepositoryException {
         try (PrintWriter logFile = new PrintWriter(
                 new BufferedWriter(new FileWriter(logFilePath, true))
         )) {
-            logFile.println(state);
+            logFile.println(programState);
             logFile.println();
         } catch (IOException e) {
             throw new RepositoryException("Failed to write ProgramState to log file: " + logFilePath, e);

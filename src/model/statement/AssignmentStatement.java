@@ -46,7 +46,7 @@ public record AssignmentStatement(Expression expression, String variableName) im
             throw new StatementException("Failed to update variable \"" + variableName + "\"", e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

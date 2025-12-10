@@ -18,7 +18,6 @@ public class RunExampleCommand extends Command {
     public void execute() {
         long startNs = System.nanoTime();
         try {
-
             controller.allSteps();
             System.out.println("Program execution completed!");
             System.out.println("Output: " + controller.getCurrentProgramState().output());
