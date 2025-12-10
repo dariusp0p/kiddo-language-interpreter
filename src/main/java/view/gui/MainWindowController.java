@@ -1,6 +1,5 @@
 package view.gui;
 
-import controller.Controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import controller.Controller;
 import model.state.ProgramState;
 import model.statement.Statement;
 import model.value.StringValue;

@@ -1,3 +1,5 @@
+package main.java;
+
 import controller.Controller;
 import examples.ProgramExamples;
 import exceptions.AdtException;
