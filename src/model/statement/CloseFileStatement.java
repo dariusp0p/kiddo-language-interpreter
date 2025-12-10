@@ -56,7 +56,7 @@ public record CloseFileStatement(Expression expression) implements Statement {
             throw new StatementException("closeRFile: failed removing file from table: " + strVal.value(), e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

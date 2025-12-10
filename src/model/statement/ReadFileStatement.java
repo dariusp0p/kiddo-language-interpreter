@@ -78,7 +78,7 @@ public record ReadFileStatement(Expression expression, String variableName) impl
             throw new StatementException("readFile: failed updating variable \"" + variableName + "\"", e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

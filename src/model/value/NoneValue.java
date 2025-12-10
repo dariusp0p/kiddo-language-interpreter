@@ -15,4 +15,7 @@ public final class NoneValue implements Value {
 
     @Override
     public String toString() { return "None"; }
+
+    @Override
+    public Value deepCopy() { return INSTANCE; }
 }

@@ -13,4 +13,9 @@ public record ReferenceValue(int address, Type locationType) implements Value {
     public String toString() {
         return "(" + address + ", " + locationType.toString() + ")";
     }
+
+    @Override
+    public Value deepCopy() {
+        return new ReferenceValue(address, locationType);
+    }
 }

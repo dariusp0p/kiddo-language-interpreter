@@ -40,6 +40,19 @@ public class MapSymbolTable implements SymbolTable {
     }
 
     @Override
+    public SymbolTable deepCopy() throws AdtException {
+        MapSymbolTable copy = new MapSymbolTable();
+        try {
+            for (var entry : map.toMap().entrySet()) {
+                copy.define(entry.getKey(), entry.getValue().deepCopy());
+            }
+        } catch (AdtException _) {
+            throw new AdtException("Failed to deep copy symbol table");
+        }
+        return copy;
+    }
+
+    @Override
     public String toString() {
         return map.toString();
     }

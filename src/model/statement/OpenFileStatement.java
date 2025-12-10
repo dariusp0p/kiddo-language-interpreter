@@ -51,6 +51,6 @@ public record OpenFileStatement(Expression expression) implements Statement {
             throw new StatementException("openRFile: failed to record file in FileTable: " + filename, e);
         }
 
-        return programState;
+        return null;
     }
 }

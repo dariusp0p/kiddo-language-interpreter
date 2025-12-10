@@ -16,7 +16,7 @@ public record CompoundStatement(Statement first, Statement second) implements St
         } catch (AdtException e) {
             throw new StatementException("Failed to push statements onto execution executionStack", e);
         }
-        return programState;
+        return null;
     }
 
     @Override

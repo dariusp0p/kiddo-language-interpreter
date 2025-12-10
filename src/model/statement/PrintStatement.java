@@ -25,7 +25,7 @@ public record PrintStatement(Expression expression) implements Statement {
             throw new StatementException("Failed to add value to output", e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

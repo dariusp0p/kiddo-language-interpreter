@@ -66,7 +66,7 @@ public record NewStatement(String varName, Expression expression) implements Sta
             throw new StatementException("new: failed to update variable \"" + varName + "\"", e);
         }
 
-        return programState;
+        return null;
     }
 
     @Override

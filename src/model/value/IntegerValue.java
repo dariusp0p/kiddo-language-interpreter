@@ -13,4 +13,9 @@ public record IntegerValue(int value) implements Value {
     public String toString() {
         return Integer.toString(value);
     }
+
+    @Override
+    public Value deepCopy() {
+        return new IntegerValue(value);
+    }
 }

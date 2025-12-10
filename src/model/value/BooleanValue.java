@@ -13,4 +13,9 @@ public record BooleanValue(boolean value) implements Value {
     public String toString() {
         return Boolean.toString(value);
     }
+
+    @Override
+    public Value deepCopy() {
+        return new BooleanValue(value);
+    }
 }

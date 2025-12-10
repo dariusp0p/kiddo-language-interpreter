@@ -35,7 +35,7 @@ public record WhileStatement(Expression condition, Statement body) implements St
             }
         }
 
-        return programState;
+        return null;
     }
 
     @Override
