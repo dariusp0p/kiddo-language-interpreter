@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+
 public class ProgramSelectorController {
     @FXML
     private ListView<String> programListView;
@@ -53,11 +54,12 @@ public class ProgramSelectorController {
                 "int v; v = 1; fork( v = v + 10; print(v) ); print(v);",
                 "Ref int a; new(a,0); fork( wH(a, rH(a) + 1); print(rH(a)) ); fork( wH(a, rH(a) + 1); print(rH(a)) ); print(rH(a));",
                 "TYPE ERROR: bool a; a = 5;",
-                "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);"
+                "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);",
+                "int a; int b; int c; a=1; b=2; c=5; (switch(a*10) (case (b*c) : print(a); print(b)) (case (10) : print(100); print(200)) (default : print(300))); print(300)"
         };
 
         try {
-            for (int i = 1; i <= 16; i++) {
+            for (int i = 1; i <= 17; i++) {
                 Method method = ProgramExamples.class.getMethod("example" + i);
                 Statement program = (Statement) method.invoke(null);
                 programs.add(program);
@@ -80,7 +82,6 @@ public class ProgramSelectorController {
 
         try {
             selectedProgram.typecheck(new MapSymbolTable());
-
             ProgramState programState = new ProgramState(
                     new DequeExecutionStack(),
                     new MapSymbolTable(),
@@ -89,13 +90,10 @@ public class ProgramSelectorController {
                     new MapHeapTable()
             );
             programState.executionStack().push(selectedProgram);
-
             Controller controller = new Controller(
                     new MainRepository(programState, "logs/gui_log.txt")
             );
-
             controller.setConcurrentExecutor(Executors.newFixedThreadPool(2));
-
 
             openMainWindow(controller);
 

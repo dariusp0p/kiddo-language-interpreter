@@ -576,4 +576,61 @@ public class ProgramExamples {
         );
     }
 
+    // java
+    public static Statement example17() {
+        // int a; int b; int c;
+        // a=1; b=2; c=5;
+        // (switch(a*10)
+        //  (case (b*c) : print(a); print(b))
+        //  (case (10) : print(100); print(200))
+        //  (default : print(300)));
+        // print(300)
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new IntegerType(), "a"),
+                new CompoundStatement(
+                        new VariableDeclarationStatement(new IntegerType(), "b"),
+                        new CompoundStatement(
+                                new VariableDeclarationStatement(new IntegerType(), "c"),
+                                new CompoundStatement(
+                                        new AssignmentStatement(new ConstantExpression(new IntegerValue(1)), "a"),
+                                        new CompoundStatement(
+                                                new AssignmentStatement(new ConstantExpression(new IntegerValue(2)), "b"),
+                                                new CompoundStatement(
+                                                        new AssignmentStatement(new ConstantExpression(new IntegerValue(5)), "c"),
+                                                        new CompoundStatement(
+                                                                new SwitchStatement(
+                                                                        new ArithmeticExpression(
+                                                                                new VariableExpression("a"),
+                                                                                new ConstantExpression(new IntegerValue(10)),
+                                                                                "*"
+                                                                        ),
+                                                                        // case b*c : print(a); print(b)
+                                                                        new ArithmeticExpression(
+                                                                                new VariableExpression("b"),
+                                                                                new VariableExpression("c"),
+                                                                                "*"
+                                                                        ),
+                                                                        new CompoundStatement(
+                                                                                new PrintStatement(new VariableExpression("a")),
+                                                                                new PrintStatement(new VariableExpression("b"))
+                                                                        ),
+                                                                        // case 10 : print(100); print(200)
+                                                                        new ConstantExpression(new IntegerValue(10)),
+                                                                        new CompoundStatement(
+                                                                                new PrintStatement(new ConstantExpression(new IntegerValue(100))),
+                                                                                new PrintStatement(new ConstantExpression(new IntegerValue(200)))
+                                                                        ),
+                                                                        // default : print(300)
+                                                                        new PrintStatement(new ConstantExpression(new IntegerValue(300)))
+                                                                ),
+                                                                // print(300)
+                                                                new PrintStatement(new ConstantExpression(new IntegerValue(300)))
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+    }
 }
