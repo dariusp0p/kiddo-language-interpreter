@@ -37,6 +37,14 @@
 
                 <Label text="File Table" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
                 <ListView fx:id="fileTableListView" VBox.vgrow="ALWAYS" prefHeight="150"/>
+
+                <Label text="Lock Table" style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+                <TableView fx:id="lockTableView" VBox.vgrow="ALWAYS" prefHeight="150">
+                    <columns>
+                        <TableColumn fx:id="lockLocationColumn" text="Location" prefWidth="100"/>
+                        <TableColumn fx:id="lockValueColumn" text="Value" prefWidth="200"/>
+                    </columns>
+                </TableView>
             </VBox>
 
             <VBox spacing="10">

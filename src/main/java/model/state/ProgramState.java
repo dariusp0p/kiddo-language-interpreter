@@ -4,7 +4,7 @@ import exceptions.KiddoException;
 import model.statement.Statement;
 
 public record ProgramState
-        (int id, ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, HeapTable heapTable) {
+        (int id, ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, HeapTable heapTable, LockTable lockTable) {
 
     private static int lastId = 0;
 
@@ -20,8 +20,9 @@ public record ProgramState
                         SymbolTable symbolTable,
                         Output output,
                         FileTable fileTable,
-                        HeapTable heapTable) {
-        this(getNewId(), executionStack, symbolTable, output, fileTable, heapTable);
+                        HeapTable heapTable,
+                        LockTable lockTable) {
+        this(getNewId(), executionStack, symbolTable, output, fileTable, heapTable, lockTable);
     }
 
     public boolean isNotCompleted() {
@@ -48,6 +49,8 @@ public record ProgramState
                 "FileTable: " +
                 (fileTable == null ? "null" : fileTable.toString()) + "\n" +
                 "HeapTable: " +
-                (heapTable == null ? "null" : heapTable.toString()) + "\n";
+                (heapTable == null ? "null" : heapTable.toString()) + "\n" +
+                "LockTable: " +
+                (lockTable == null ? "null" : lockTable.toString());
     }
 }

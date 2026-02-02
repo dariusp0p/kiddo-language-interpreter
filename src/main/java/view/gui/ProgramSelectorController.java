@@ -53,11 +53,12 @@ public class ProgramSelectorController {
                 "int v; v = 1; fork( v = v + 10; print(v) ); print(v);",
                 "Ref int a; new(a,0); fork( wH(a, rH(a) + 1); print(rH(a)) ); fork( wH(a, rH(a) + 1); print(rH(a)) ); print(rH(a));",
                 "TYPE ERROR: bool a; a = 5;",
-                "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);"
+                "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);",
+                "Ref int v1; Ref int v2; int x; int q; new(v1,20); new(v2,30); newLock(x); fork(fork(lock(x); wh(v1,rh(v1)-1); unlock(x)); lock(x); wh(v1,rh(v1)*10); unlock(x)); newLock(q); fork(fork(lock(q); wh(v2,rh(v2)+5); unlock(q)); lock(q); wh(v2,rh(v2)*10); unlock(q)); lock(x); print(rh(v1)); unlock(x); lock(q); print(rh(v2)); unlock(q);"
         };
 
         try {
-            for (int i = 1; i <= 16; i++) {
+            for (int i = 1; i <= 17; i++) {
                 Method method = ProgramExamples.class.getMethod("example" + i);
                 Statement program = (Statement) method.invoke(null);
                 programs.add(program);
@@ -86,7 +87,8 @@ public class ProgramSelectorController {
                     new MapSymbolTable(),
                     new ListOutput(),
                     new MapFileTable(),
-                    new MapHeapTable()
+                    new MapHeapTable(),
+                    new MapLockTable()
             );
             programState.executionStack().push(selectedProgram);
 

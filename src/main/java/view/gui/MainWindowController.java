@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.gui.model.HeapEntry;
+import view.gui.model.LockEntry;
 import view.gui.model.SymbolTableEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +30,14 @@ public class MainWindowController {
     private TableColumn<HeapEntry, Integer> heapAddressColumn;
     @FXML
     private TableColumn<HeapEntry, String> heapValueColumn;
+
+    @FXML
+    private TableView<LockEntry> lockTableView;
+    @FXML
+    private TableColumn<LockEntry, Integer> lockLocationColumn;
+    @FXML
+    private TableColumn<LockEntry, String> lockValueColumn;
+
     @FXML
     private ListView<String> outputListView;
     @FXML
@@ -54,6 +63,9 @@ public class MainWindowController {
     public void initialize() {
         heapAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         heapValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        lockLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        lockValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
         variableNameColumn.setCellValueFactory(new PropertyValueFactory<>("variableName"));
         variableValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
@@ -133,6 +145,7 @@ public class MainWindowController {
             programCountField.setText(String.valueOf(programStates.size()));
 
             updateHeapTable(currentState.heapTable().getContent());
+            updateLockTable(currentState.lockTable().getContent());
             updateOutputList(currentState.output().getAll());
             updateFileTableList(currentState.fileTable().getContent().toMap());
             updateProgramStateList(programStates);
@@ -152,6 +165,14 @@ public class MainWindowController {
                 heapEntries.add(new HeapEntry(address, value.toString()))
         );
         heapTableView.setItems(heapEntries);
+    }
+
+    private void updateLockTable(Map<Integer, Integer> lockTable) {
+        ObservableList<LockEntry> entries = FXCollections.observableArrayList();
+        lockTable.forEach((location, value) ->
+                entries.add(new LockEntry(location, String.valueOf(value)))
+        );
+        lockTableView.setItems(entries);
     }
 
     private void updateOutputList(List<model.value.Value> output) {

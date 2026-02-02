@@ -576,4 +576,143 @@ public class ProgramExamples {
         );
     }
 
+    public static Statement example17() {
+        // Ref int v1; Ref int v2; int x; int q;
+        // new(v1,20); new(v2,30); newLock(x);
+        // fork(
+        //   fork(lock(x); wh(v1,rh(v1)-1); unlock(x));
+        //   lock(x); wh(v1,rh(v1)*10); unlock(x)
+        // );
+        // newLock(q);
+        // fork(
+        //   fork(lock(q); wh(v2,rh(v2)+5); unlock(q));
+        //   lock(q); wh(v2,rh(v2)*10); unlock(q)
+        // );
+        // lock(x); print(rh(v1)); unlock(x);
+        // lock(q); print(rh(v2)); unlock(q);
+
+        Statement decs = new CompoundStatement(
+                new VariableDeclarationStatement(new ReferenceType(new IntegerType()), "v1"),
+                new CompoundStatement(
+                        new VariableDeclarationStatement(new ReferenceType(new IntegerType()), "v2"),
+                        new CompoundStatement(
+                                new VariableDeclarationStatement(new IntegerType(), "x"),
+                                new VariableDeclarationStatement(new IntegerType(), "q")
+                        )
+                )
+        );
+
+        Statement initHeapAndLocks = new CompoundStatement(
+                new NewStatement("v1", new ConstantExpression(new IntegerValue(20))),
+                new CompoundStatement(
+                        new NewStatement("v2", new ConstantExpression(new IntegerValue(30))),
+                        new NewLockStatement("x")
+                )
+        );
+
+        // inner fork: fork(lock(x); wh(v1,rh(v1)-1); unlock(x))
+        Statement innerFork1 = new ForkStatement(
+                new CompoundStatement(
+                        new LockStatement("x"),
+                        new CompoundStatement(
+                                new HeapWriteStatement("v1",
+                                        new ArithmeticExpression(
+                                                new ReadHeapExpression(new VariableExpression("v1")),
+                                                new ConstantExpression(new IntegerValue(1)),
+                                                "-"
+                                        )
+                                ),
+                                new UnlockStatement("x")
+                        )
+                )
+        );
+
+        // sibling in first fork: lock(x); wh(v1,rh(v1)*10); unlock(x)
+        Statement innerFork2 = new CompoundStatement(
+                new LockStatement("x"),
+                new CompoundStatement(
+                        new HeapWriteStatement("v1",
+                                new ArithmeticExpression(
+                                        new ReadHeapExpression(new VariableExpression("v1")),
+                                        new ConstantExpression(new IntegerValue(10)),
+                                        "*"
+                                )
+                        ),
+                        new UnlockStatement("x")
+                )
+        );
+
+        Statement firstFork = new ForkStatement(new CompoundStatement(innerFork1, innerFork2));
+
+        Statement secondLockInit = new NewLockStatement("q");
+
+        // second group forks (operating on v2 and q)
+        Statement innerForkQ1 = new ForkStatement(
+                new CompoundStatement(
+                        new LockStatement("q"),
+                        new CompoundStatement(
+                                new HeapWriteStatement("v2",
+                                        new ArithmeticExpression(
+                                                new ReadHeapExpression(new VariableExpression("v2")),
+                                                new ConstantExpression(new IntegerValue(5)),
+                                                "+"
+                                        )
+                                ),
+                                new UnlockStatement("q")
+                        )
+                )
+        );
+
+        Statement innerForkQ2 = new CompoundStatement(
+                new LockStatement("q"),
+                new CompoundStatement(
+                        new HeapWriteStatement("v2",
+                                new ArithmeticExpression(
+                                        new ReadHeapExpression(new VariableExpression("v2")),
+                                        new ConstantExpression(new IntegerValue(10)),
+                                        "*"
+                                )
+                        ),
+                        new UnlockStatement("q")
+                )
+        );
+
+        Statement secondFork = new ForkStatement(new CompoundStatement(innerForkQ1, innerForkQ2));
+
+        // final prints (locked)
+        Statement finalPrints = new CompoundStatement(
+                new CompoundStatement(
+                        new LockStatement("x"),
+                        new CompoundStatement(
+                                new PrintStatement(new ReadHeapExpression(new VariableExpression("v1"))),
+                                new UnlockStatement("x")
+                        )
+                ),
+                new CompoundStatement(
+                        new LockStatement("q"),
+                        new CompoundStatement(
+                                new PrintStatement(new ReadHeapExpression(new VariableExpression("v2"))),
+                                new UnlockStatement("q")
+                        )
+                )
+        );
+
+        // full program composition
+        return new CompoundStatement(
+                decs,
+                new CompoundStatement(
+                        initHeapAndLocks,
+                        new CompoundStatement(
+                                firstFork,
+                                new CompoundStatement(
+                                        secondLockInit,
+                                        new CompoundStatement(
+                                                secondFork,
+                                                finalPrints
+                                        )
+                                )
+                        )
+                )
+        );
+    }
 }

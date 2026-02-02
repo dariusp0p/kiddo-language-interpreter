@@ -20,7 +20,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg1.executionStack().push(ex1);
         Controller ctr1 = new Controller(new MainRepository(prg1, "logs/log1.txt"));
@@ -32,7 +33,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg2.executionStack().push(ex2);
         Controller ctr2 = new Controller(new MainRepository(prg2, "logs/log2.txt"));
@@ -44,7 +46,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg3.executionStack().push(ex3);
         Controller ctr3 = new Controller(new MainRepository(prg3, "logs/log3.txt"));
@@ -56,7 +59,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg4.executionStack().push(ex4);
         Controller ctr4 = new Controller(new MainRepository(prg4, "logs/log4.txt"));
@@ -68,7 +72,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg5.executionStack().push(ex5);
         Controller ctr5 = new Controller(new MainRepository(prg5, "logs/log5.txt"));
@@ -80,7 +85,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg6.executionStack().push(ex6);
         Controller ctr6 = new Controller(new MainRepository(prg6, "logs/log6.txt"));
@@ -92,7 +98,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg7.executionStack().push(ex7);
         Controller ctr7 = new Controller(new MainRepository(prg7, "logs/log7.txt"));
@@ -104,7 +111,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg8.executionStack().push(ex8);
         Controller ctr8 = new Controller(new MainRepository(prg8, "logs/log8.txt"));
@@ -116,7 +124,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg9.executionStack().push(ex9);
         Controller ctr9 = new Controller(new MainRepository(prg9, "logs/log9.txt"));
@@ -128,7 +137,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg10.executionStack().push(ex10);
         Controller ctr10 = new Controller(new MainRepository(prg10, "logs/log10.txt"));
@@ -140,7 +150,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg11.executionStack().push(ex11);
         Controller ctr11 = new Controller(new MainRepository(prg11, "logs/log11.txt"));
@@ -152,7 +163,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg12.executionStack().push(ex12);
         Controller ctr12 = new Controller(new MainRepository(prg12, "logs/log12.txt"));
@@ -164,7 +176,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg13.executionStack().push(ex13);
         Controller ctr13 = new Controller(new MainRepository(prg13, "logs/log13.txt"));
@@ -176,7 +189,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg14.executionStack().push(ex14);
         Controller ctr14 = new Controller(new MainRepository(prg14, "logs/log14.txt"));
@@ -188,7 +202,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg15.executionStack().push(ex15);
         Controller ctr15 = new Controller(new MainRepository(prg15, "logs/log15.txt"));
@@ -200,7 +215,8 @@ public class Main {
                 new MapSymbolTable(),
                 new ListOutput(),
                 new MapFileTable(),
-                new MapHeapTable()
+                new MapHeapTable(),
+                new MapLockTable()
         );
         prg16.executionStack().push(ex16);
         Controller ctr16 = new Controller(new MainRepository(prg16, "logs/log16.txt"));
