@@ -633,4 +633,84 @@ public class ProgramExamples {
                 )
         );
     }
+
+    // java
+// File: `src/main/java/examples/ProgramExamples.java`
+    public static Statement example18() {
+        // Ref int v1;
+        // int cnt;
+        // new(v1,1);
+        // createSemaphore(cnt, rH(v1));
+        // fork( acquire(cnt); wH(v1, rH(v1)*10); print(rH(v1)); release(cnt) );
+        // fork( acquire(cnt); wH(v1, rH(v1)*20); print(rH(v1)); release(cnt) );
+        // acquire(cnt);
+        // print(rH(v1)-1);
+        // release(cnt);
+
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new ReferenceType(new IntegerType()), "v1"),
+                new CompoundStatement(
+                        new VariableDeclarationStatement(new IntegerType(), "cnt"),
+                        new CompoundStatement(
+                                new NewStatement("v1", new ConstantExpression(new IntegerValue(1))),
+                                new CompoundStatement(
+                                        new CreateSemaphoreStatement("cnt", new ReadHeapExpression(new VariableExpression("v1"))),
+                                        new CompoundStatement(
+                                                new ForkStatement(
+                                                        new CompoundStatement(
+                                                                new AcquireStatement("cnt"),
+                                                                new CompoundStatement(
+                                                                        new HeapWriteStatement("v1",
+                                                                                new ArithmeticExpression(
+                                                                                        new ReadHeapExpression(new VariableExpression("v1")),
+                                                                                        new ConstantExpression(new IntegerValue(10)),
+                                                                                        "*"
+                                                                                )
+                                                                        ),
+                                                                        new CompoundStatement(
+                                                                                new PrintStatement(new ReadHeapExpression(new VariableExpression("v1"))),
+                                                                                new ReleaseStatement("cnt")
+                                                                        )
+                                                                )
+                                                        )
+                                                ),
+                                                new CompoundStatement(
+                                                        new ForkStatement(
+                                                                new CompoundStatement(
+                                                                        new AcquireStatement("cnt"),
+                                                                        new CompoundStatement(
+                                                                                new HeapWriteStatement("v1",
+                                                                                        new ArithmeticExpression(
+                                                                                                new ReadHeapExpression(new VariableExpression("v1")),
+                                                                                                new ConstantExpression(new IntegerValue(20)),
+                                                                                                "*"
+                                                                                        )
+                                                                                ),
+                                                                                new CompoundStatement(
+                                                                                        new PrintStatement(new ReadHeapExpression(new VariableExpression("v1"))),
+                                                                                        new ReleaseStatement("cnt")
+                                                                                )
+                                                                        )
+                                                                )
+                                                        ),
+                                                        new CompoundStatement(
+                                                                new AcquireStatement("cnt"),
+                                                                new CompoundStatement(
+                                                                        new PrintStatement(
+                                                                                new ArithmeticExpression(
+                                                                                        new ReadHeapExpression(new VariableExpression("v1")),
+                                                                                        new ConstantExpression(new IntegerValue(1)),
+                                                                                        "-"
+                                                                                )
+                                                                        ),
+                                                                        new ReleaseStatement("cnt")
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+    }
 }

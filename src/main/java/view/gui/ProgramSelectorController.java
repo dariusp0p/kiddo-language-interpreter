@@ -55,11 +55,12 @@ public class ProgramSelectorController {
                 "Ref int a; new(a,0); fork( wH(a, rH(a) + 1); print(rH(a)) ); fork( wH(a, rH(a) + 1); print(rH(a)) ); print(rH(a));",
                 "TYPE ERROR: bool a; a = 5;",
                 "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);",
-                "int a; int b; int c; a=1; b=2; c=5; (switch(a*10) (case (b*c) : print(a); print(b)) (case (10) : print(100); print(200)) (default : print(300))); print(300)"
+                "int a; int b; int c; a=1; b=2; c=5; (switch(a*10) (case (b*c) : print(a); print(b)) (case (10) : print(100); print(200)) (default : print(300))); print(300)",
+                "Ref int v1; int cnt; new(v1,1); createSemaphore(cnt,rH(v1)); two forks that modify v1; main acquires and prints rH(v1)-1"
         };
 
         try {
-            for (int i = 1; i <= 17; i++) {
+            for (int i = 1; i <= 18; i++) {
                 Method method = ProgramExamples.class.getMethod("example" + i);
                 Statement program = (Statement) method.invoke(null);
                 programs.add(program);
@@ -87,7 +88,8 @@ public class ProgramSelectorController {
                     new MapSymbolTable(),
                     new ListOutput(),
                     new MapFileTable(),
-                    new MapHeapTable()
+                    new MapHeapTable(),
+                    new MapSemaphoreTable()
             );
             programState.executionStack().push(selectedProgram);
             Controller controller = new Controller(

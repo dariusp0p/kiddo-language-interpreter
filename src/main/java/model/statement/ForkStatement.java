@@ -15,7 +15,8 @@ public record ForkStatement (Statement statement) implements Statement {
                 newSymbolTable,
                 programState.output(),
                 programState.fileTable(),
-                programState.heapTable()
+                programState.heapTable(),
+                programState.semaphoreTable()
         );
     }
 

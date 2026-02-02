@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.gui.model.HeapEntry;
 import view.gui.model.SymbolTableEntry;
+import view.gui.model.SemaphoreTableEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,7 +20,8 @@ import model.value.StringValue;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import java.util.AbstractMap;
+import java.util.ArrayList;
 
 public class MainWindowController {
     @FXML
@@ -44,6 +46,16 @@ public class MainWindowController {
     private TableColumn<SymbolTableEntry, String> variableValueColumn;
     @FXML
     private ListView<String> executionStackListView;
+
+    @FXML
+    private TableView<SemaphoreTableEntry> semaphoreTableView;
+    @FXML
+    private TableColumn<SemaphoreTableEntry, Integer> semaphoreIndexColumn;
+    @FXML
+    private TableColumn<SemaphoreTableEntry, Integer> semaphoreValueColumn;
+    @FXML
+    private TableColumn<SemaphoreTableEntry, String> semaphoreOwnersColumn;
+
     @FXML
     private Button backButton;
     @FXML
@@ -58,6 +70,16 @@ public class MainWindowController {
 
         variableNameColumn.setCellValueFactory(new PropertyValueFactory<>("variableName"));
         variableValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        if (semaphoreIndexColumn != null) {
+            semaphoreIndexColumn.setCellValueFactory(new PropertyValueFactory<>("index"));
+        }
+        if (semaphoreValueColumn != null) {
+            semaphoreValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+        }
+        if (semaphoreOwnersColumn != null) {
+            semaphoreOwnersColumn.setCellValueFactory(new PropertyValueFactory<>("owners"));
+        }
 
         programStateListView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -136,6 +158,12 @@ public class MainWindowController {
             updateFileTableList(currentState.fileTable().getContent().toMap());
             updateProgramStateList(programStates);
 
+            try {
+                updateSemaphoreTable(currentState.semaphoreTable().getContent());
+            } catch (Exception ignored) {
+                if (semaphoreTableView != null) semaphoreTableView.setItems(FXCollections.observableArrayList());
+            }
+
             if (programStateListView.getSelectionModel().getSelectedItem() == null && !programStates.isEmpty()) {
                 programStateListView.getSelectionModel().selectFirst();
             }
@@ -211,6 +239,20 @@ public class MainWindowController {
                 stack.stream().map(Object::toString).collect(Collectors.toList())
         );
         executionStackListView.setItems(stackStrings);
+    }
+
+    private void updateSemaphoreTable(Map<Integer, AbstractMap.SimpleEntry<Integer, List<Integer>>> sem) {
+        ObservableList<SemaphoreTableEntry> entries = FXCollections.observableArrayList();
+        if (sem != null) {
+            sem.forEach((index, entry) -> {
+                Integer n1 = entry == null ? null : entry.getKey();
+                List<Integer> ownersList = entry == null ? new ArrayList<>() : entry.getValue();
+                String ownersStr = ownersList == null ? "" :
+                        ownersList.stream().map(Object::toString).collect(Collectors.joining(", "));
+                entries.add(new SemaphoreTableEntry(index, n1, ownersStr));
+            });
+        }
+        if (semaphoreTableView != null) semaphoreTableView.setItems(entries);
     }
 
     private void showError(String message) {
