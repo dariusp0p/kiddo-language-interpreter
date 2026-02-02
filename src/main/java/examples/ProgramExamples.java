@@ -576,4 +576,43 @@ public class ProgramExamples {
         );
     }
 
+    // java
+    public static Statement example17() {
+        // Ref int a; new(a,20);
+        // for(v=0; v<3; v=v+1) fork( print(v); v = v * rH(a) );
+        // print(rH(a));
+        return new CompoundStatement(
+                new VariableDeclarationStatement(new ReferenceType(new IntegerType()), "a"),
+                new CompoundStatement(
+                        new NewStatement("a", new ConstantExpression(new IntegerValue(20))),
+                        new CompoundStatement(
+                                new ForStatement(
+                                        "v",
+                                        new ConstantExpression(new IntegerValue(0)), // exp1
+                                        new ConstantExpression(new IntegerValue(3)), // exp2
+                                        new ArithmeticExpression( // exp3: v = v + 1
+                                                new VariableExpression("v"),
+                                                new ConstantExpression(new IntegerValue(1)),
+                                                "+"
+                                        ),
+                                        // body: fork(print(v); v = v * rH(a))
+                                        new ForkStatement(
+                                                new CompoundStatement(
+                                                        new PrintStatement(new VariableExpression("v")),
+                                                        new AssignmentStatement(
+                                                                new ArithmeticExpression(
+                                                                        new VariableExpression("v"),
+                                                                        new ReadHeapExpression(new VariableExpression("a")),
+                                                                        "*"
+                                                                ),
+                                                                "v"
+                                                        )
+                                                )
+                                        )
+                                ),
+                                new PrintStatement(new ReadHeapExpression(new VariableExpression("a")))
+                        )
+                )
+        );
+    }
 }

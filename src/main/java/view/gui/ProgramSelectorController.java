@@ -53,11 +53,12 @@ public class ProgramSelectorController {
                 "int v; v = 1; fork( v = v + 10; print(v) ); print(v);",
                 "Ref int a; new(a,0); fork( wH(a, rH(a) + 1); print(rH(a)) ); fork( wH(a, rH(a) + 1); print(rH(a)) ); print(rH(a));",
                 "TYPE ERROR: bool a; a = 5;",
-                "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);"
+                "TYPE ERROR: int a; a = 5; if a then print(1) else print(2);",
+                "Ref int a; new(a,20); for(v=0; v<3; v=v+1) fork( print(v); v = v * rH(a) ); print(rH(a));"
         };
 
         try {
-            for (int i = 1; i <= 16; i++) {
+            for (int i = 1; i <= 17; i++) {
                 Method method = ProgramExamples.class.getMethod("example" + i);
                 Statement program = (Statement) method.invoke(null);
                 programs.add(program);
