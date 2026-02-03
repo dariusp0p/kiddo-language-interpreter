@@ -17,15 +17,14 @@ public record ForStatement(String varName, Expression exp1, Expression exp2, Exp
     public ProgramState execute(ProgramState programState) throws StatementException, AdtException {
         var stack = programState.executionStack();
 
-        Statement decl = new VariableDeclarationStatement(new IntegerType(), varName);
-        Statement init = new AssignmentStatement(exp1, varName);
-
+        Statement declaration = new VariableDeclarationStatement(new IntegerType(), varName);
+        Statement assignment = new AssignmentStatement(exp1, varName);
         Expression condition = new RelationalExpression(new VariableExpression(varName), exp2, "<");
-        Statement incr = new AssignmentStatement(exp3, varName);
-        Statement whileBody = new CompoundStatement(body, incr);
+        Statement incrementation = new AssignmentStatement(exp3, varName);
+        Statement whileBody = new CompoundStatement(body, incrementation);
         Statement whileStmt = new WhileStatement(condition, whileBody);
 
-        Statement desugared = new CompoundStatement(decl, new CompoundStatement(init, whileStmt));
+        Statement desugared = new CompoundStatement(declaration, new CompoundStatement(assignment, whileStmt));
 
         stack.push(desugared);
         return null;

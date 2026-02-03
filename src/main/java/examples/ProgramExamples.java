@@ -576,7 +576,6 @@ public class ProgramExamples {
         );
     }
 
-    // java
     public static Statement example17() {
         // Ref int a; new(a,20);
         // for(v=0; v<3; v=v+1) fork( print(v); v = v * rH(a) );
