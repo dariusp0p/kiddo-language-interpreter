@@ -27,7 +27,6 @@ public record LockStatement(String varName) implements Statement {
         boolean acquired = lockTable.acquire(foundIndex, state.getId());
 
         if (!acquired) {
-            // push back the lock statement to try again later
             state.executionStack().push(this);
         }
         return null;

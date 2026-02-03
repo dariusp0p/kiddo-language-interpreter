@@ -610,7 +610,6 @@ public class ProgramExamples {
                 )
         );
 
-        // inner fork: fork(lock(x); wh(v1,rh(v1)-1); unlock(x))
         Statement innerFork1 = new ForkStatement(
                 new CompoundStatement(
                         new LockStatement("x"),
@@ -627,7 +626,6 @@ public class ProgramExamples {
                 )
         );
 
-        // sibling in first fork: lock(x); wh(v1,rh(v1)*10); unlock(x)
         Statement innerFork2 = new CompoundStatement(
                 new LockStatement("x"),
                 new CompoundStatement(
@@ -646,7 +644,6 @@ public class ProgramExamples {
 
         Statement secondLockInit = new NewLockStatement("q");
 
-        // second group forks (operating on v2 and q)
         Statement innerForkQ1 = new ForkStatement(
                 new CompoundStatement(
                         new LockStatement("q"),
@@ -679,7 +676,7 @@ public class ProgramExamples {
 
         Statement secondFork = new ForkStatement(new CompoundStatement(innerForkQ1, innerForkQ2));
 
-        // final prints (locked)
+        // prints
         Statement finalPrints = new CompoundStatement(
                 new CompoundStatement(
                         new LockStatement("x"),
@@ -697,7 +694,7 @@ public class ProgramExamples {
                 )
         );
 
-        // full program composition
+        // program composition
         return new CompoundStatement(
                 decs,
                 new CompoundStatement(
