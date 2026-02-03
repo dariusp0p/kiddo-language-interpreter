@@ -11,8 +11,6 @@ import model.value.BooleanValue;
 import model.value.Value;
 import model.type.Type;
 
-
-
 public record WhileStatement(Expression condition, Statement body) implements Statement {
     @Override
     public ProgramState execute(ProgramState programState) throws StatementException {

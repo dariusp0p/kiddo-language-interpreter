@@ -11,7 +11,6 @@ import model.state.SymbolTable;
 import model.type.Type;
 import model.type.IntegerType;
 
-
 public record ForStatement(String varName, Expression exp1, Expression exp2, Expression exp3, Statement body) implements Statement {
     @Override
     public ProgramState execute(ProgramState programState) throws StatementException, AdtException {
